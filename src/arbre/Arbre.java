@@ -24,18 +24,7 @@ public class Arbre {
      */
     public Arbre(Noeud racine) {
         this.racine = racine;
-    }
-
-    /**
-     * Méthode qui génère l'AST en fonction de la ligne saisie par
-     * l'utilisateur.
-     *
-     * @param cmd ligne lu au clavier.
-     * @return L'arbre généré.
-     */
-    public static Arbre genererArbreSyntaxique(String cmd) {
-        return new Arbre();
-    }
+    }   
 
     /**
      * Affichage de l'arbre en mode console.
