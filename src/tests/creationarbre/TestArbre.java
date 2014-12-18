@@ -4,7 +4,9 @@
 package tests.creationarbre;
 
 import arbre.Arbre;
+import arbre.GenererArbre;
 import arbre.Noeud;
+import exception.SyntaxErrorException;
 
 public class TestArbre {
 
@@ -31,5 +33,15 @@ public class TestArbre {
         
         // Affichage à nouveau de l'arbre
         a.afficherArbre();
+    }
+    
+    public static void afficherArbreAvecCommande(String commande) {
+        System.out.println("Lancement de la commande : " + commande);
+        try {
+            Arbre a = GenererArbre.genererArbreSyntaxique(commande);
+            a.afficherArbre();
+        } catch (SyntaxErrorException ex) {
+            System.out.println("Erreur de syntaxe.");
+        }
     }
 }
