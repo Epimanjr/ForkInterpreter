@@ -66,11 +66,11 @@ public class GenererArbre {
         // Ajout des du premier fils (= nom de la variable)
         n.ajouterFils(new Noeud(split[0]));
         // Ajout du deuxième fils, correspond à l'expression qui suit (= reste du tableau)
-        String expr = "";
-        for (int i = 2; i < split.length; i++) {
-            expr += split[i];
+        String expr = split[2];
+        for (int i = 3; i < split.length; i++) {
+            expr += " " + split[i];
         }
-        n.ajouterFils(new Noeud(expr));
+        n.ajouterFils(genererNoeud(expr));
         // Le Noeud peut être retourné
         return n;
     }
