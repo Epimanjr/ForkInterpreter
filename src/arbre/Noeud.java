@@ -20,7 +20,7 @@ public class Noeud {
     /**
      * Le Noeud père.
      */
-    private Noeud noeudPere;
+    private Noeud noeudPere = null;
 
     /**
      * Construit un Noeud à partir de sa valeur (donné en paramètre)
@@ -39,6 +39,9 @@ public class Noeud {
      */
     public void ajouterFils(Noeud n) {
         // Ajout du lien vers le père
+        if(n == null) {
+            System.out.println("NULL");
+        }
         n.setNoeudPere(this);
         // Ajout du Noeud dans la liste.
         this.fils.add(n);
