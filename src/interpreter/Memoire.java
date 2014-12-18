@@ -5,10 +5,6 @@ package interpreter;
 
 import java.util.HashMap;
 
-/**
- *
- * @author Maxime BLAISE
- */
 public class Memoire {
     
     /**
@@ -29,7 +25,8 @@ public class Memoire {
      * 
      * @return la mémoire. (unique)
      */
-    public static  HashMap<String, String> getMemoire() {
+    public static HashMap<String, String> getMemoire() {
         return Memoire.memoire;
     }
+   
 }
