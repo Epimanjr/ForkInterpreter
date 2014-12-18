@@ -32,18 +32,22 @@ public class GenererArbre {
      */
     public static Noeud genererNoeud(String line) throws SyntaxErrorException {
         Noeud n = null;
-        
+
         // On split la chaîne
         String[] split = line.split(" ");
-        
+
         // Cas simple
         if (split.length == 1) {
             return new Noeud(line);
         }
-        // Cas assignation
+        // Cas assignation + opérations
         switch (split[1]) {
             case ":=":
             case "::=":
+            case "+":
+            case "-":
+            case "*":
+            case "/":
                 n = creerNoeudAssignation(split);
                 break;
         }
@@ -53,17 +57,17 @@ public class GenererArbre {
 
     public static Noeud creerNoeudAssignation(String[] split) throws SyntaxErrorException {
         // Gestion des exceptions
-        if(split.length < 3) {
+        if (split.length < 3) {
             throw new SyntaxErrorException();
         }
-        
+
         // Création du Noeud
         Noeud n = new Noeud(split[1]);
         // Ajout des du premier fils (= nom de la variable)
         n.ajouterFils(new Noeud(split[0]));
         // Ajout du deuxième fils, correspond à l'expression qui suit (= reste du tableau)
         String expr = "";
-        for(int i=2;i<split.length;i++) {
+        for (int i = 2; i < split.length; i++) {
             expr += split[i];
         }
         n.ajouterFils(new Noeud(expr));
