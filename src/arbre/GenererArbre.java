@@ -11,6 +11,9 @@ import exception.SyntaxErrorException;
  */
 public class GenererArbre {
 
+    /**
+     * Liste des opérateurs logiques.
+     */
     public static String[] operateursLogiques = {
         "<",
         "<=",
@@ -71,6 +74,11 @@ public class GenererArbre {
                     n = creerNoeudOperateur(line, operateur);
                 }
             }
+        }
+        
+        if (n == null) // Traitement des symboles * et / d'abord (pour la priorité)
+        {
+            
         }
 
         if (n == null) { // Erreur de syntaxe
