@@ -20,5 +20,16 @@ public class TestArbre {
         Arbre a = new Arbre(n);
         // Affichage de cet arbre
         a.afficherArbre();
+
+        // Ajout d'un fils
+        Noeud fils = new Noeud("--");
+        n.ajouterFils(fils);
+
+        // Affichage des Noeuds
+        System.out.println(a.getRacine());
+        System.out.println(a.getRacine().getFils().get(0));
+        
+        // Affichage à nouveau de l'arbre
+        a.afficherArbre();
     }
 }
