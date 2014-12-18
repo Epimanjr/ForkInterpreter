@@ -46,7 +46,9 @@ public class Arbre {
      */
     public void afficherArbre() {
         // On appelle la méthode qui gère l'affichage d'un Noeud qui gère la récursivité.
+        System.out.println("*** DEBUT DE L'ARBRE ***");
         afficherNoeud(this.racine, 0);
+        System.out.println("*** FIN DE L'ARBRE ***");
     }
 
     /**
@@ -58,16 +60,26 @@ public class Arbre {
      */
     public void afficherNoeud(Noeud noeud, int indent) {
         // Si c'est une feuille
-        if (noeud.estUneFeuille()) {
-            String indentation = "";
-            for (int i = 0; i < indent; i++) {
-                indentation += "\t";
+        String indentation = "";
+        for (int i = 0; i < indent; i++) {
+            indentation += "\t";
+        }
+        System.out.println(indentation + noeud.getValeur());
+        if (!noeud.estUneFeuille()) // On fait un appel récursif
+        {
+            for (Noeud n : noeud.getFils()) {
+                afficherNoeud(n, indent + 1);
             }
-            System.out.println(indentation + noeud.getValeur());
         }
-        // Sinon, on fait un appel récursif
-        for (Noeud n : noeud.getFils()) {
-            afficherNoeud(n, indent++);
-        }
+
     }
+
+    public Noeud getRacine() {
+        return racine;
+    }
+
+    public void setRacine(Noeud racine) {
+        this.racine = racine;
+    }
+
 }
