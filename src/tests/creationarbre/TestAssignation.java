@@ -3,26 +3,22 @@
  */
 package tests.creationarbre;
 
-import arbre.Arbre;
-import arbre.GenererArbre;
-import exception.SyntaxErrorException;
+import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
 
 public class TestAssignation {
     
     public static void main(String[] args) {
+        // Assignations simples
         afficherArbreAvecCommande("a := 3");
         afficherArbreAvecCommande("a :=");
-        afficherArbreAvecCommande("a := 2 + 3");
-        afficherArbreAvecCommande("a := 2 + 3 * 5");
+        
+        // Assignation avec opérateurs
+        afficherArbreAvecCommande("a := 2 < 3");
+        
+        // Assignation avec calculs
+        /*afficherArbreAvecCommande("a := 2 + 3");
+        afficherArbreAvecCommande("a := 2 + 3 * 5");*/
     }
     
-    public static void afficherArbreAvecCommande(String commande) {
-        System.out.println("Lancement de la commande : " + commande);
-        try {
-            Arbre a = GenererArbre.genererArbreSyntaxique(commande);
-            a.afficherArbre();
-        } catch (SyntaxErrorException ex) {
-            System.out.println("Erreur de syntaxe.");
-        }
-    }
+    
 }
