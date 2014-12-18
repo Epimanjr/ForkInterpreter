@@ -13,6 +13,7 @@ public class TestAssignation {
         afficherArbreAvecCommande("a := 3");
         afficherArbreAvecCommande("a :=");
         afficherArbreAvecCommande("a := 2 + 3");
+        afficherArbreAvecCommande("a := 2 + 3 * 5");
     }
     
     public static void afficherArbreAvecCommande(String commande) {
