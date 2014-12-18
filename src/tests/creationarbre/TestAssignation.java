@@ -10,16 +10,15 @@ import exception.SyntaxErrorException;
 public class TestAssignation {
     
     public static void main(String[] args) {
-        Arbre a;
+        afficherArbreAvecCommande("a := 3");
+        afficherArbreAvecCommande("a :=");
+        afficherArbreAvecCommande("a := 2 + 3");
+    }
+    
+    public static void afficherArbreAvecCommande(String commande) {
+        System.out.println("Lancement de la commande : " + commande);
         try {
-            a = GenererArbre.genererArbreSyntaxique("a := 3");
-            a.afficherArbre();
-        } catch (SyntaxErrorException ex) {
-            System.out.println("Erreur de syntaxe.");
-        }
-        
-        try {
-            a = GenererArbre.genererArbreSyntaxique("a :=");
+            Arbre a = GenererArbre.genererArbreSyntaxique(commande);
             a.afficherArbre();
         } catch (SyntaxErrorException ex) {
             System.out.println("Erreur de syntaxe.");
