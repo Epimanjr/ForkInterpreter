@@ -15,7 +15,7 @@ public class Noeud {
     /**
      * La liste des Noeuds enfants.
      */
-    private ArrayList<Noeud> fils;
+    private final ArrayList<Noeud> fils;
 
     /**
      * Le Noeud père.
@@ -87,6 +87,31 @@ public class Noeud {
      */
     public void setNoeudPere(Noeud noeudPere) {
         this.noeudPere = noeudPere;
+    }
+
+    /**
+     * Affichage entier d'un Noeud.
+     *
+     * @return String
+     */
+    @Override
+    public String toString() {
+        String res = "Valeur : " + this.valeur + "\n";
+        res += "Noeud père : ";
+        if (this.noeudPere == null) {
+            res += "Aucun.\n";
+        } else {
+            res += this.noeudPere.getValeur() + "\n";
+        }
+        res += "Noeud(s) fils : ";
+        if (this.getFils().isEmpty()) {
+            res += "Aucun !";
+        } else {
+            for (Noeud n : this.getFils()) {
+                res += n.getValeur() + " ";
+            }
+        }
+        return res;
     }
 
 }
