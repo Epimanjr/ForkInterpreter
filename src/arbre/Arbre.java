@@ -6,6 +6,10 @@
  */
 package arbre;
 
+/**
+ * 
+ * @author Maxime BLAISE
+ */
 public class Arbre {
 
     private Noeud racine;

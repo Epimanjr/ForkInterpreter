@@ -3,13 +3,13 @@
  */
 package arbre;
 
+import exception.SyntaxErrorException;
+
 /**
  *
- * @author blaise
+ * @author Maxime BLAISE
  */
 public class GenererArbre {
-
-
 
     /**
      * Méthode qui génère l'AST en fonction de la ligne saisie par
@@ -17,8 +17,9 @@ public class GenererArbre {
      *
      * @param cmd La commande
      * @return L'arbre généré.
+     * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
-    public static Arbre genererArbreSyntaxique(String cmd) {
+    public static Arbre genererArbreSyntaxique(String cmd) throws SyntaxErrorException {
         return new Arbre(genererNoeud(cmd));
     }
 
@@ -27,8 +28,9 @@ public class GenererArbre {
      *
      * @param line
      * @return le Noeud
+     * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
-    public static Noeud genererNoeud(String line) {
+    public static Noeud genererNoeud(String line) throws SyntaxErrorException {
         Noeud n = null;
         
         // On split la chaîne
@@ -49,7 +51,12 @@ public class GenererArbre {
         return n;
     }
 
-    public static Noeud creerNoeudAssignation(String[] split) {
+    public static Noeud creerNoeudAssignation(String[] split) throws SyntaxErrorException {
+        // Gestion des exceptions
+        if(split.length < 3) {
+            throw new SyntaxErrorException();
+        }
+        
         // Création du Noeud
         Noeud n = new Noeud(split[1]);
         // Ajout des du premier fils (= nom de la variable)
