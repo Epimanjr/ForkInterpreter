@@ -74,6 +74,9 @@ public class GenererArbre {
                 case "if":
                     n = creerNoeudCondition(line);
                     break;
+                case "while":
+                    n = creerNoeudIteration(line);
+                    break;
             }
         }
 
@@ -204,5 +207,9 @@ public class GenererArbre {
 
         // Le Noeud peut être retourné
         return n;
+    }
+
+    public static Noeud creerNoeudIteration(String line) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
