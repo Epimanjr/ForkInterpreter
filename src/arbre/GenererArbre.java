@@ -20,6 +20,16 @@ public class GenererArbre {
         ">",
         ">="
     };
+    
+    public static String[] operateursPrioritaires = {
+        "*",
+        "/"
+    };
+    
+    public static String[] operateursSecondaires = {
+        "+", 
+        "-"
+    };
 
     /**
      * Méthode qui génère l'AST en fonction de la ligne saisie par
@@ -76,9 +86,23 @@ public class GenererArbre {
             }
         }
         
+   
+        if (n == null) // Traitement des symboles + et - ensuite
+        {
+            for(String operateur : operateursSecondaires) {
+                if (line.contains(operateur)) {
+                    n = creerNoeudCalcul(line, operateur);
+                }
+            }
+        }
+        
         if (n == null) // Traitement des symboles * et / d'abord (pour la priorité)
         {
-            
+            for(String operateur : operateursPrioritaires) {
+                if (line.contains(operateur)) {
+                    n = creerNoeudCalcul(line, operateur);
+                }
+            }
         }
 
         if (n == null) { // Erreur de syntaxe
@@ -150,6 +174,26 @@ public class GenererArbre {
 
         // Split
         String[] split = line.split(operateur);
+        String partieGauche = (split[0]).trim();
+        String partieDroite = (split[1]).trim();
+
+        // Création du Noeud
+        Noeud n = new Noeud(operateur);
+        n.ajouterFils(genererNoeud(partieGauche));
+        n.ajouterFils(genererNoeud(partieDroite));
+
+        // Le Noeud peut être retourné
+        return n;
+    }
+
+    private static Noeud creerNoeudCalcul(String line, String operateur) throws SyntaxErrorException {
+        // Gestion des exceptions
+        if (line.split(" ").length < 3) {
+            throw new SyntaxErrorException();
+        }
+
+        // Split
+        String[] split = line.split("\\"+operateur);
         String partieGauche = (split[0]).trim();
         String partieDroite = (split[1]).trim();
 
