@@ -209,7 +209,30 @@ public class GenererArbre {
         return n;
     }
 
-    public static Noeud creerNoeudIteration(String line) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public static Noeud creerNoeudIteration(String ligne) throws SyntaxErrorException {
+        // Gestion des exceptions
+        if (!ligne.contains("do")) {
+            throw new SyntaxErrorException();
+        }
+
+        // Split avec then
+        String[] splitWhile = ligne.split("do");
+        // Création de la condition
+        String condition = (splitWhile[0].substring(6, splitWhile[0].length())).trim();
+
+        // Gestion des instructions
+        String instructionWhile = (splitWhile[1]).trim();
+
+        System.out.println(condition);
+        System.out.println(instructionWhile);
+        
+        // Création du Noeud
+        Noeud n = new Noeud("while");
+
+        n.ajouterFils(genererNoeud(condition));
+        n.ajouterFils(genererNoeud(instructionWhile));
+
+        // Le Noeud peut être retourné
+        return n;
     }
 }
