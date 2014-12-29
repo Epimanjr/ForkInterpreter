@@ -7,6 +7,8 @@ package graphique;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
@@ -42,6 +44,20 @@ public class Fenetre extends Application {
     class MainGroup extends Group {
         
         public MainGroup() {
+            // Label indicatif
+            Label label = new Label("Saisir une commande ici");
+            label.setPrefSize(Config.largeur - 10, 12);
+            label.setTranslateX(5);
+            label.setTranslateY(5);
+            this.getChildren().add(label);
+            
+            // Zone de saisie des commandes
+            TextField saisie = new TextField();
+            saisie.setPrefSize(Config.largeur - 10, 12);
+            saisie.setTranslateX(5);
+            saisie.setTranslateY(25);
+            this.getChildren().add(saisie);
+            
             
         }
     }
