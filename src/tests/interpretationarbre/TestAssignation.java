@@ -1,7 +1,7 @@
 /*
  * Test de l'assignation
  */
-package test.interpretationarbre;
+package tests.interpretationarbre;
 
 import interpreter.Memoire;
 import static tests.creationarbre.TestArbre.afficherEtInterpreterArbre;
