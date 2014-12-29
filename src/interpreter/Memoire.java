@@ -10,7 +10,7 @@ public class Memoire {
     /**
      * Mémoire.
      */
-    private static final HashMap<String, String> memoire = new HashMap<>();
+    private static HashMap<String, String> memoire = new HashMap<>();
     
     /**
      * Mémoire du programme.
@@ -28,5 +28,13 @@ public class Memoire {
     public static HashMap<String, String> getMemoire() {
         return Memoire.memoire;
     }
-   
+
+    public static void afficherEtatMemoire() {
+        System.out.println(Memoire.memoire);
+    }
+    
+    public static void ajouter(String nom, String valeur) {
+        Memoire.memoire.put(nom, valeur);
+    }
+    
 }

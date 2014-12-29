@@ -3,15 +3,16 @@
  */
 package test.interpretationarbre;
 
-import tests.creationarbre.*;
-import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
+import interpreter.Memoire;
+import static tests.creationarbre.TestArbre.afficherEtInterpreterArbre;
 
 public class TestAssignation {
     
     public static void main(String[] args) {
-        // Assignations simples
-        afficherArbreAvecCommande("a := 3");
         
+        // Assignations simples
+        afficherEtInterpreterArbre("a := 3");
+        Memoire.afficherEtatMemoire();
         
         
         /*

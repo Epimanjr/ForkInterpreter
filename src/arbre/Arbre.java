@@ -6,6 +6,9 @@
  */
 package arbre;
 
+import static arbre.InterpreterArbre.interpreterArbreSyntaxique;
+import exception.SyntaxErrorException;
+
 /**
  * 
  * @author Maxime BLAISE
@@ -38,6 +41,13 @@ public class Arbre {
         System.out.println("*** DEBUT DE L'ARBRE ***");
         afficherNoeud(this.racine, 0);
         System.out.println("*** FIN DE L'ARBRE ***\n\n");
+    }
+    
+    /**
+     * Interprétation de l'arbre
+     */
+    public void interpreterArbre() throws SyntaxErrorException {
+        interpreterArbreSyntaxique(this);
     }
 
     /**
