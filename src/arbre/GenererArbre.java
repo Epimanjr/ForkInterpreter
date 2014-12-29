@@ -199,7 +199,13 @@ public class GenererArbre {
         // Split
         String[] split = line.split("\\"+operateur);
         String partieGauche = (split[0]).trim();
+        
+        // Génération de la partie de droite
+        // ATTENTION : Il faut tout prendre...
         String partieDroite = (split[1]).trim();
+        for(int i=2;i<split.length;i++) {
+            partieDroite += " " + (split[i]).trim();
+        }
 
         // Création du Noeud
         Noeud n = new Noeud(operateur);
