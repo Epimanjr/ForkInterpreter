@@ -72,7 +72,7 @@ public class InterpreterArbre {
                     case "-":
                         i = Integer.parseInt(trouverValeur(nGauche)) - Integer.parseInt(trouverValeur(nDroite));
                         v = i.toString();
-                        break;  
+                        break;
                     default:
                         System.out.println("Pas encore possible ...");
                         break;
@@ -85,7 +85,22 @@ public class InterpreterArbre {
     }
 
     public static boolean estEntierOuBooleen(String s) {
-        return true;
+        boolean res = false;
+        try {
+            Integer.parseInt(s);
+            res = true;
+        } catch (NumberFormatException nfe) {
+            switch(s){
+                case "true":
+                    res = true;
+                    break;
+                case "false":
+                    res = true;
+                default:
+                    res = false;
+            }
+        }
+        return res;
     }
 
 }
