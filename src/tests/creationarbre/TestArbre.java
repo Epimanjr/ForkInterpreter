@@ -41,7 +41,7 @@ public class TestArbre {
             Arbre a = GenererArbre.genererArbreSyntaxique(commande);
             a.afficherArbre();
         } catch (SyntaxErrorException ex) {
-            System.out.println("Erreur de syntaxe.");
+            System.out.println("Erreur de syntaxe.\n");
         }
     }
 }

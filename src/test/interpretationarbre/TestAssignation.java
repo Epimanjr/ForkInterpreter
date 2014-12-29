@@ -1,8 +1,9 @@
 /*
  * Test de l'assignation
  */
-package tests.creationarbre;
+package test.interpretationarbre;
 
+import tests.creationarbre.*;
 import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
 
 public class TestAssignation {
@@ -10,6 +11,10 @@ public class TestAssignation {
     public static void main(String[] args) {
         // Assignations simples
         afficherArbreAvecCommande("a := 3");
+        
+        
+        
+        /*
         afficherArbreAvecCommande("a :=");
         
         // Assignation avec opérateurs
@@ -21,7 +26,7 @@ public class TestAssignation {
         afficherArbreAvecCommande("a := 2 + 3 * 5");
         afficherArbreAvecCommande("a := 2 * 3 + 5");
         
-        afficherArbreAvecCommande("a := 2 * 3 + a := 2 * 3 + 5 + 5");
+        afficherArbreAvecCommande("a := 2 * 3 + a := 2 * 3 + 5 + 5");*/
     }
     
     
