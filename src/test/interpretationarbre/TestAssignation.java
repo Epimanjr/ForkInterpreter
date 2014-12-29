@@ -16,6 +16,9 @@ public class TestAssignation {
         afficherEtInterpreterArbre("b := 2 + 3 + 11");
         Memoire.afficherEtatMemoire();
         
+        afficherEtInterpreterArbre("if false then c := 2 + 1 else d := 2 - 1");
+        Memoire.afficherEtatMemoire();
+        
     }
 
 }

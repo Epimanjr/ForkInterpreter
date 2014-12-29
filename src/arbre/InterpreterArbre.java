@@ -18,35 +18,79 @@ public class InterpreterArbre {
      * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
     public static void interpreterArbreSyntaxique(Arbre ast) throws SyntaxErrorException {
-        //return new Arbre(genererNoeud(cmd));
+
         System.out.println("\n*** INTERPRETATION DE L'AST ***");
 
+        // ON RECUPÈRE LE NOEUD RACINE
         Noeud racine = ast.getRacine();
 
-        switch (racine.getValeur()) {
+        // ON INTERPRETE LE NOEUD RACINE
+        interpreterNoeud(racine);
+
+        System.out.println("*** FIN INTERPRETATION ***");
+    }
+
+    private static void interpreterNoeud(Noeud n) {
+        switch (n.getValeur()) {
             case ":=":
                 System.out.println("    --> ASSIGNATION");
-                interpreterAssignation(racine);
+                interpreterAssignation(n);
+                break;
+            case "if":
+                System.out.println("    --> CONDITION");
+                interpreterCondition(n);
+                break;
+            case "while":
+                System.out.println("    --> BOUCLE");
                 break;
             default:
                 System.out.println("    --> PAS ENCORE IMPLÉMENTÉ");
                 break;
         }
-
-        System.out.println("*** FIN INTERPRETATION ***");
     }
 
-    private static void interpreterAssignation(Noeud racine) {
+    private static void interpreterAssignation(Noeud n) {
         // ON TROUVE LA VALEUR DANS LE NOEUD GAUCHE
-        Noeud nGauche = racine.getFils().get(1);
+        Noeud nGauche = n.getFils().get(1);
         String valeurDeVariable = trouverValeur(nGauche);
 
         // ON TROUVE LE NOM DE LA VARIABLE DANS LE NOEUD DROITE
-        Noeud nDroite = racine.getFils().get(0);
+        Noeud nDroite = n.getFils().get(0);
         String nomDeVariable = nDroite.getValeur();
 
         // ON ASSOCIE DANS LA MÉMOIRE, LA VALEUR À LA VARIABLE
         Memoire.ajouter(nomDeVariable, valeurDeVariable);
+    }
+
+    private static void interpreterCondition(Noeud n) {
+        // ON TROUVE LA VALEUR DU NOEUD DE LA CONDITION
+        Noeud nCondition = n.getFils().get(0);
+        String valeurCondition = trouverValeur(nCondition);
+
+        // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
+        if (Memoire.getMemoire().containsKey(valeurCondition)) {
+            valeurCondition = Memoire.getMemoire().get(valeurCondition);
+        }
+
+        // SI LA CONDITION EST BIEN, AU FINAL, TRUE OU FALSE
+        if ((valeurCondition.equals("true")) || (valeurCondition.equals("false"))) {
+            // SI C'EST VRAI
+            if (valeurCondition.equals("true")) {
+                // ON INTERPRETE LE NOEUD VRAI
+                Noeud nVrai = n.getFils().get(1);
+                interpreterNoeud(nVrai);
+            }
+
+            // SI C'EST FAUX
+            if (valeurCondition.equals("false")) {
+                // ON INTERPRETE LE NOEUD FAUX
+                Noeud nFaux = n.getFils().get(2);
+                interpreterNoeud(nFaux);
+            }
+        } else {
+            System.out.println("Problème : Une condition doit être une valeur booléenne !");
+        }
+
     }
 
     private static String trouverValeur(Noeud n) {
@@ -86,19 +130,21 @@ public class InterpreterArbre {
 
     public static boolean estEntierOuBooleen(String s) {
         boolean res = false;
+        switch (s) {
+            case "true":
+                res = true;
+                break;
+            case "false":
+                res = true;
+                break;
+            default:
+                res = false;
+                break;
+        }
         try {
             Integer.parseInt(s);
             res = true;
         } catch (NumberFormatException nfe) {
-            switch(s){
-                case "true":
-                    res = true;
-                    break;
-                case "false":
-                    res = true;
-                default:
-                    res = false;
-            }
         }
         return res;
     }
