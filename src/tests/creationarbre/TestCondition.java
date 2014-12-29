@@ -15,5 +15,7 @@ public class TestCondition {
     
     public static void main(String[] args) {
         afficherArbreAvecCommande("if 2 + 3 > 4 then a else 2 + 3");
+        
+        afficherArbreAvecCommande("if a > b then a := a + 1 else b := b - 1");
     }
 }
