@@ -38,37 +38,54 @@ public class InterpreterArbre {
 
     private static void interpreterAssignation(Noeud racine) {
         // ON TROUVE LA VALEUR DANS LE NOEUD GAUCHE
-        Noeud nGauche = racine.getFils().get(0);
+        Noeud nGauche = racine.getFils().get(1);
         String valeurDeVariable = trouverValeur(nGauche);
 
         // ON TROUVE LE NOM DE LA VARIABLE DANS LE NOEUD DROITE
-        Noeud nDroite = racine.getFils().get(1);
+        Noeud nDroite = racine.getFils().get(0);
         String nomDeVariable = nDroite.getValeur();
 
-	// ON ASSOCIE DANS LA MÉMOIRE, LA VALEUR À LA VARIABLE
-        Memoire.ajouter(nomDeVariable,valeurDeVariable);
+        // ON ASSOCIE DANS LA MÉMOIRE, LA VALEUR À LA VARIABLE
+        Memoire.ajouter(nomDeVariable, valeurDeVariable);
     }
 
     private static String trouverValeur(Noeud n) {
         String v = null;
+        String vNoeud = n.getValeur();
         // SI LA VALEUR DU NOEUD EST UN ENTIER OU UN BOOLEEN, ON RETOURNERA CETTE VALEUR
-        if(estEntierOuBooleen(n.getValeur())) {
-            v = n.getValeur();
+        if (estEntierOuBooleen(vNoeud)) {
+            v = vNoeud;
         } else {
             String[] symbolesAcceptables = {"+", "-"};
-            // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ DANS UNE ASSIGNATION
-            if(Arrays.asList(symbolesAcceptables).contains(n.getValeur())) {
-                
+            // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ DANS UNE ASSIGNATION, ON CONTINUE (Récursivité)
+            if (Arrays.asList(symbolesAcceptables).contains(vNoeud)) {
+                // ON TROUVE LA VALEUR DANS LES NOEUDS (GAUCHE & DROITE)
+                Noeud nGauche = n.getFils().get(1);
+                Noeud nDroite = n.getFils().get(0);
+                Integer i;
+                // EN FONCTION DU SYMBOLE, ON EFFECTUE LA BONNE OPÉRATION
+                switch (vNoeud) {
+                    case "+":
+                        i = Integer.parseInt(trouverValeur(nGauche)) + Integer.parseInt(trouverValeur(nDroite));
+                        v = i.toString();
+                        break;
+                    case "-":
+                        i = Integer.parseInt(trouverValeur(nGauche)) - Integer.parseInt(trouverValeur(nDroite));
+                        v = i.toString();
+                        break;  
+                    default:
+                        System.out.println("Pas encore possible ...");
+                        break;
+                }
             } else {
                 System.out.println("Erreur de syntaxe");
             }
         }
         return v;
     }
-    
+
     public static boolean estEntierOuBooleen(String s) {
         return true;
     }
-
 
 }
