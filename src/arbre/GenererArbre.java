@@ -18,7 +18,8 @@ public class GenererArbre {
         "<",
         "<=",
         ">",
-        ">="
+        ">=",
+        "="
     };
     
     public static String[] operateursPrioritaires = {

@@ -56,4 +56,13 @@ public class TestArbre {
         }
     }
     
+    public static void interpreterArbre(String commande) {
+        try {
+            Arbre a = GenererArbre.genererArbreSyntaxique(commande);
+            a.interpreterArbre();
+        } catch (SyntaxErrorException ex) {
+            System.out.println("Erreur de syntaxe.\n");
+        }
+    }
+    
 }

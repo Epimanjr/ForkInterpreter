@@ -1,5 +1,7 @@
 
+import interpreter.Memoire;
 import java.util.Scanner;
+import static tests.creationarbre.TestArbre.interpreterArbre;
 
 /**
  *
@@ -16,6 +18,9 @@ public class Principale {
             // Lecture de la commande
             System.out.print(">>> ");
             cmd = sc.nextLine();
+            
+            interpreterArbre(cmd);
+            Memoire.afficherEtatMemoire();
             
             if(cmd.equals("EXIT")) {
                 // Fermeture du programme

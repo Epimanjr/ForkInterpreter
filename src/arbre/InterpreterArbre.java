@@ -127,8 +127,9 @@ public class InterpreterArbre {
         } else if (estEnMemoire(vNoeud)) {
             v = valeurEnMemoire(vNoeud);
         } else {
-            String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<"};
+            String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<", "="};
             // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ, ON CONTINUE (récursivité)
+            System.out.println(vNoeud);
             if (Arrays.asList(symbolesAcceptables).contains(vNoeud)) {
                 // EN FONCTION DU SYMBOLE, ON EFFECTUE LA BONNE OPÉRATION
                 v = faireOperation(n, vNoeud);

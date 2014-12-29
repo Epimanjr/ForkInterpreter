@@ -24,7 +24,7 @@ public class TestAssignation {
         
         afficherEtInterpreterArbre("while e < 10 do e := e + 1 ");
         Memoire.afficherEtatMemoire();
-        
+
     }
 
 }
