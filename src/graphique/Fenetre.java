@@ -15,24 +15,18 @@ import javafx.stage.Stage;
  */
 public class Fenetre extends Application {
 
-    /**
-     * Largeur de la fenêtre.
-     */
-    public static int largeur = 400;
-
-    /**
-     * Hauteur de la fenêtre.
-     */
-    public static int hauteur = 300;
+    
     
     public static String titre = "Projet original de Java 2014";
 
     @Override
     public void start(Stage primaryStage) {
-        Group root = new Group();
+        Group root = new MainGroup();
 
         primaryStage.setTitle(titre);
-        primaryStage.setScene(new Scene(root, largeur, hauteur));
+        
+        Scene scene = new Scene(root, Config.largeur, Config.hauteur);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
@@ -43,5 +37,12 @@ public class Fenetre extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    class MainGroup extends Group {
+        
+        public MainGroup() {
+            
+        }
     }
 }
