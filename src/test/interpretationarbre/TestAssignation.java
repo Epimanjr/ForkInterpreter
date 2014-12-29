@@ -13,10 +13,16 @@ public class TestAssignation {
         afficherEtInterpreterArbre("a := 3");
         Memoire.afficherEtatMemoire();
 
-        afficherEtInterpreterArbre("b := 2 + 3 + 11");
+        afficherEtInterpreterArbre("b := 2 + 3");
         Memoire.afficherEtatMemoire();
         
-        afficherEtInterpreterArbre("if false then c := 2 + 1 else d := 2 - 1");
+        afficherEtInterpreterArbre("if true then c := a + 1 else d := 2 - 1");
+        Memoire.afficherEtatMemoire();
+        
+        afficherEtInterpreterArbre("e := 0");
+        Memoire.afficherEtatMemoire();
+        
+        afficherEtInterpreterArbre("while e < 10 do e := e + 1 ");
         Memoire.afficherEtatMemoire();
         
     }

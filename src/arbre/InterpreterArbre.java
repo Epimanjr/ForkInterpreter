@@ -31,6 +31,7 @@ public class InterpreterArbre {
     }
 
     private static void interpreterNoeud(Noeud n) {
+        // ON SWITCH SUR LA VALEUR DU NOEUD POUR CHOISIR LA BONNE METHODE D'INTERPRETATION
         switch (n.getValeur()) {
             case ":=":
                 System.out.println("    --> ASSIGNATION");
@@ -42,6 +43,7 @@ public class InterpreterArbre {
                 break;
             case "while":
                 System.out.println("    --> BOUCLE");
+                interpreterBoucle(n);
                 break;
             default:
                 System.out.println("    --> PAS ENCORE IMPLÉMENTÉ");
@@ -93,34 +95,43 @@ public class InterpreterArbre {
 
     }
 
+    private static void interpreterBoucle(Noeud n) {
+        // ON TROUVE LA VALEUR DU NOEUD DE LA CONDITION DE LA BOUCLE
+        Noeud nCondition = n.getFils().get(0);
+        String valeurCondition = trouverValeur(nCondition);
+
+        // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
+        if (Memoire.getMemoire().containsKey(valeurCondition)) {
+            valeurCondition = Memoire.getMemoire().get(valeurCondition);
+        }
+
+        // SI LA CONDITION DE LA BOUCLE EST BIEN, AU FINAL, TRUE
+        if (valeurCondition.equals("true")) {
+            // ON INTERPRETE LE NOEUD VRAI
+            Noeud nVrai = n.getFils().get(1);
+            interpreterNoeud(nVrai);
+            // ON INTERPRETE A NOUVEAU LA BOUCLE (récursivité)
+            interpreterBoucle(n);
+        } else {
+            System.out.println("Fin de boucle !");
+        }
+
+    }
+
     private static String trouverValeur(Noeud n) {
         String v = null;
         String vNoeud = n.getValeur();
         // SI LA VALEUR DU NOEUD EST UN ENTIER OU UN BOOLEEN, ON RETOURNERA CETTE VALEUR
         if (estEntierOuBooleen(vNoeud)) {
             v = vNoeud;
+        } else if (estEnMemoire(vNoeud)) {
+            v = valeurEnMemoire(vNoeud);
         } else {
-            String[] symbolesAcceptables = {"+", "-"};
-            // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ DANS UNE ASSIGNATION, ON CONTINUE (Récursivité)
+            String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<"};
+            // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ, ON CONTINUE (récursivité)
             if (Arrays.asList(symbolesAcceptables).contains(vNoeud)) {
-                // ON TROUVE LA VALEUR DANS LES NOEUDS (GAUCHE & DROITE)
-                Noeud nGauche = n.getFils().get(1);
-                Noeud nDroite = n.getFils().get(0);
-                Integer i;
                 // EN FONCTION DU SYMBOLE, ON EFFECTUE LA BONNE OPÉRATION
-                switch (vNoeud) {
-                    case "+":
-                        i = Integer.parseInt(trouverValeur(nGauche)) + Integer.parseInt(trouverValeur(nDroite));
-                        v = i.toString();
-                        break;
-                    case "-":
-                        i = Integer.parseInt(trouverValeur(nGauche)) - Integer.parseInt(trouverValeur(nDroite));
-                        v = i.toString();
-                        break;
-                    default:
-                        System.out.println("Pas encore possible ...");
-                        break;
-                }
+                v = faireOperation(n, vNoeud);
             } else {
                 System.out.println("Erreur de syntaxe");
             }
@@ -146,6 +157,82 @@ public class InterpreterArbre {
             res = true;
         } catch (NumberFormatException nfe) {
         }
+        return res;
+    }
+
+    private static boolean estEnMemoire(String s) {
+        boolean res = false;
+        res = Memoire.getMemoire().containsKey(s);
+        return res;
+    }
+
+    private static String valeurEnMemoire(String s) {
+        String res = "";
+        res = Memoire.getMemoire().get(s);
+        return res;
+    }
+
+    private static String faireOperation(Noeud n, String vNoeud) {
+        Integer i;
+        Boolean b;
+        String res = "";
+        
+        // ON TROUVE LA VALEUR DANS LES NOEUDS (GAUCHE & DROITE)
+        Noeud nGauche = n.getFils().get(1);
+        Noeud nDroite = n.getFils().get(0);
+        
+        // ON SWITCH SUR LA VALEUR DU NOEUD POUR FAIRE LA BONNE OPERATION
+        switch (vNoeud) {
+            // ADDITION
+            case "+":
+                i = Integer.parseInt(trouverValeur(nDroite)) + Integer.parseInt(trouverValeur(nGauche));
+                res = i.toString();
+                break;
+            // SOUSTRACTION
+            case "-":
+                i = Integer.parseInt(trouverValeur(nDroite)) - Integer.parseInt(trouverValeur(nGauche));
+                res = i.toString();
+                break;
+            // MULTIPLICATION
+            case "*":
+                i = Integer.parseInt(trouverValeur(nDroite)) * Integer.parseInt(trouverValeur(nGauche));
+                res = i.toString();
+                break;
+            // DIVISION
+            case "/":
+                i = Integer.parseInt(trouverValeur(nDroite)) / Integer.parseInt(trouverValeur(nGauche));
+                res = i.toString();
+                break;
+            // SUPERIORITE STRICTE
+            case ">":
+                b = Integer.parseInt(trouverValeur(nDroite)) > Integer.parseInt(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            // SUPERIORITE OU EGALITE
+            case ">=":
+                b = Integer.parseInt(trouverValeur(nDroite)) >= Integer.parseInt(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            // INFERIORITE STRICTE
+            case "<":
+                b = Integer.parseInt(trouverValeur(nDroite)) < Integer.parseInt(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            // INFERIORITE OU EGALITE
+            case "<=":
+                b = Integer.parseInt(trouverValeur(nDroite)) <= Integer.parseInt(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            // EGALITE
+            case "=":
+                b = Integer.parseInt(trouverValeur(nDroite)) == Integer.parseInt(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            default:
+                System.out.println("Pas encore possible ...");
+                break;
+        }
+        
         return res;
     }
 
