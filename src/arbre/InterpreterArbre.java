@@ -85,9 +85,11 @@ public class InterpreterArbre {
 
             // SI C'EST FAUX
             if (valeurCondition.equals("false")) {
-                // ON INTERPRETE LE NOEUD FAUX
-                Noeud nFaux = n.getFils().get(2);
-                interpreterNoeud(nFaux);
+                // ON INTERPRETE LE NOEUD FAUX S'IL EXISTE
+                if (n.getFils().size() == 3) {
+                    Noeud nFaux = n.getFils().get(2);
+                    interpreterNoeud(nFaux);
+                }
             }
         } else {
             System.out.println("Problème : Une condition doit être une valeur booléenne !");
@@ -129,7 +131,6 @@ public class InterpreterArbre {
         } else {
             String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<", "="};
             // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ, ON CONTINUE (récursivité)
-            System.out.println(vNoeud);
             if (Arrays.asList(symbolesAcceptables).contains(vNoeud)) {
                 // EN FONCTION DU SYMBOLE, ON EFFECTUE LA BONNE OPÉRATION
                 v = faireOperation(n, vNoeud);
