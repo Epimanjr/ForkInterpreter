@@ -43,6 +43,9 @@ public class GenererArbre {
      * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
     public static Arbre genererArbreSyntaxique(String cmd) throws SyntaxErrorException {
+        // Initialisation des booléens.
+        casReturn = false;
+        
         return new Arbre(genererNoeud(cmd));
     }
 
