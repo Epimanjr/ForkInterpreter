@@ -23,8 +23,9 @@ public class TestAssignation {
         
         afficherArbreAvecCommande("a := 2 * 3 + a := 2 * 3 + 5 + 5");
         
-        afficherArbreAvecCommande("a := 2 + 3 + 10");
+        afficherArbreAvecCommande("a := 2 * 3 * 10");
+        
+        afficherArbreAvecCommande("b := a * 3 * 10");
     }
-    
     
 }

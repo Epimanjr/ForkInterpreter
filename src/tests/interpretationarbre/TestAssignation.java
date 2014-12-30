@@ -10,12 +10,13 @@ public class TestAssignation {
 
     public static void main(String[] args) {
 
+        
         afficherEtInterpreterArbre("a := 3");
         Memoire.afficherEtatMemoire();
 
-        afficherEtInterpreterArbre("b := 2 + 3");
+        afficherEtInterpreterArbre("b := 1 + 3 + 4");
         Memoire.afficherEtatMemoire();
-        
+        /*
         afficherEtInterpreterArbre("if true then c := a + 1 else d := 2 - 1");
         Memoire.afficherEtatMemoire();
         
@@ -23,7 +24,7 @@ public class TestAssignation {
         Memoire.afficherEtatMemoire();
         
         afficherEtInterpreterArbre("while e < 10 do e := e + 1 ");
-        Memoire.afficherEtatMemoire();
+        Memoire.afficherEtatMemoire();*/
 
     }
 
