@@ -247,11 +247,16 @@ public class GenererArbre {
     }
 
     private static Noeud creerNoeudReturn(String ligne) throws SyntaxErrorException {
-        // Création du Noeud
-        Noeud n = new Noeud("return");
-        
         // Split avec return
         String[] splitReturn = ligne.split("return");
+        
+        // Gestion des exceptions
+        if(splitReturn.length < 2) {
+            throw new SyntaxErrorException();
+        }
+        
+        // Création du Noeud
+        Noeud n = new Noeud("return");
         
         // Instruction à interpréter puis à afficher
         String instructionReturn = (splitReturn[1]).trim();
