@@ -52,6 +52,7 @@ public class GenererArbre {
      * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
     public static Noeud genererNoeud(String line) throws SyntaxErrorException {
+        System.out.println(line);
         Noeud n = null;
 
         // On split la chaîne
@@ -204,7 +205,7 @@ public class GenererArbre {
         // ATTENTION : Il faut tout prendre...
         String partieDroite = (split[1]).trim();
         for(int i=2;i<split.length;i++) {
-            partieDroite += " " + (split[i]).trim();
+            partieDroite += " + " + (split[i]).trim();
         }
 
         // Création du Noeud
