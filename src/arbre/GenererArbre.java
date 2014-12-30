@@ -78,6 +78,9 @@ public class GenererArbre {
                 case "while":
                     n = creerNoeudIteration(line);
                     break;
+                case "return":
+                    n = creerNoeudReturn(line);
+                    break;
             }
         }
 
@@ -239,6 +242,22 @@ public class GenererArbre {
         n.ajouterFils(genererNoeud(condition));
         n.ajouterFils(genererNoeud(instructionWhile));
 
+        // Le Noeud peut être retourné
+        return n;
+    }
+
+    private static Noeud creerNoeudReturn(String ligne) throws SyntaxErrorException {
+        // Création du Noeud
+        Noeud n = new Noeud("return");
+        
+        // Split avec return
+        String[] splitReturn = ligne.split("return");
+        
+        // Instruction à interpréter puis à afficher
+        String instructionReturn = (splitReturn[1]).trim();
+        
+        n.ajouterFils(genererNoeud(instructionReturn));
+        
         // Le Noeud peut être retourné
         return n;
     }
