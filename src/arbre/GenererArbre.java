@@ -10,6 +10,8 @@ import exception.SyntaxErrorException;
  * @author Maxime BLAISE
  */
 public class GenererArbre {
+    
+    public static boolean casReturn = false;
 
     /**
      * Liste des opérateurs logiques.
@@ -120,7 +122,7 @@ public class GenererArbre {
 
     public static Noeud creerNoeudAssignation(String[] split) throws SyntaxErrorException {
         // Gestion des exceptions
-        if (split.length < 3) {
+        if (split.length < 3 || casReturn) {
             throw new SyntaxErrorException();
         }
 
@@ -140,7 +142,7 @@ public class GenererArbre {
 
     public static Noeud creerNoeudCondition(String ligne) throws SyntaxErrorException {
         // Gestion des exceptions
-        if (!ligne.contains("then")) {
+        if (!ligne.contains("then") || casReturn) {
             throw new SyntaxErrorException();
         }
 
@@ -221,7 +223,7 @@ public class GenererArbre {
 
     public static Noeud creerNoeudIteration(String ligne) throws SyntaxErrorException {
         // Gestion des exceptions
-        if (!ligne.contains("do")) {
+        if (!ligne.contains("do") || casReturn) {
             throw new SyntaxErrorException();
         }
 
@@ -261,6 +263,7 @@ public class GenererArbre {
         // Instruction à interpréter puis à afficher
         String instructionReturn = (splitReturn[1]).trim();
         
+        casReturn = true;
         n.ajouterFils(genererNoeud(instructionReturn));
         
         // Le Noeud peut être retourné
