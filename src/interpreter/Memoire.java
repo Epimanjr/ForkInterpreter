@@ -30,7 +30,7 @@ public class Memoire {
     }
 
     public static void afficherEtatMemoire() {
-        System.out.println(Memoire.memoire);
+        System.out.println(Memoire.memoire + "\n");
     }
     
     public static void ajouter(String nom, String valeur) {

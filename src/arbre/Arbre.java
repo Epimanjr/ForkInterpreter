@@ -40,14 +40,17 @@ public class Arbre {
         // On appelle la méthode qui gère l'affichage d'un Noeud qui gère la récursivité.
         System.out.println("*** DEBUT DE L'ARBRE ***");
         afficherNoeud(this.racine, 0);
-        System.out.println("*** FIN DE L'ARBRE ***\n\n");
+        System.out.println("*** FIN DE L'ARBRE ***");
     }
     
     /**
      * Interprétation de l'arbre
+     * @throws exception.SyntaxErrorException
      */
-    public void interpreterArbre() throws SyntaxErrorException {
-        interpreterArbreSyntaxique(this);
+    public String interpreterArbre() throws SyntaxErrorException {
+        String res = "";
+        res = interpreterArbreSyntaxique(this);
+        return res;
     }
 
     /**

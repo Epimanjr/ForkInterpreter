@@ -17,20 +17,21 @@ public class InterpreterArbre {
      * @param ast l'AST
      * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
-    public static void interpreterArbreSyntaxique(Arbre ast) throws SyntaxErrorException {
+    public static String interpreterArbreSyntaxique(Arbre ast) throws SyntaxErrorException {
 
-        System.out.println("\n*** INTERPRETATION DE L'AST ***");
+        String res = "";
 
         // ON RECUPÈRE LE NOEUD RACINE
         Noeud racine = ast.getRacine();
 
         // ON INTERPRETE LE NOEUD RACINE
-        interpreterNoeud(racine);
+        res = interpreterNoeud(racine);
 
-        System.out.println("*** FIN INTERPRETATION ***");
+        return res;
     }
 
-    private static void interpreterNoeud(Noeud n) {
+    private static String interpreterNoeud(Noeud n) {
+        String res = "";
         // ON SWITCH SUR LA VALEUR DU NOEUD POUR CHOISIR LA BONNE METHODE D'INTERPRETATION
         switch (n.getValeur()) {
             case ":=":
@@ -45,10 +46,15 @@ public class InterpreterArbre {
                 System.out.println("    --> BOUCLE");
                 interpreterBoucle(n);
                 break;
+            case "return":
+                System.out.println("    ---> RETURN");
+                res = interpreterReturn(n);
+                break;
             default:
                 System.out.println("    --> PAS ENCORE IMPLÉMENTÉ");
                 break;
         }
+        return res;
     }
 
     private static void interpreterAssignation(Noeud n) {
@@ -120,6 +126,14 @@ public class InterpreterArbre {
 
     }
 
+    private static String interpreterReturn(Noeud n) {
+        String res = "";
+        // ON INTERPRETE LE NOEUD RETURN
+        Noeud nReturn = n.getFils().get(0);
+        res = trouverValeur(nReturn);        
+        return res;
+    }
+
     private static String trouverValeur(Noeud n) {
         String v = null;
         String vNoeud = n.getValeur();
@@ -178,11 +192,11 @@ public class InterpreterArbre {
         Integer i;
         Boolean b;
         String res = "";
-        
+
         // ON TROUVE LA VALEUR DANS LES NOEUDS (GAUCHE & DROITE)
         Noeud nGauche = n.getFils().get(1);
         Noeud nDroite = n.getFils().get(0);
-        
+
         // ON SWITCH SUR LA VALEUR DU NOEUD POUR FAIRE LA BONNE OPERATION
         switch (vNoeud) {
             // ADDITION
@@ -234,7 +248,7 @@ public class InterpreterArbre {
                 System.out.println("Pas encore possible ...");
                 break;
         }
-        
+
         return res;
     }
 

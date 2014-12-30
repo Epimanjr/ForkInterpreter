@@ -16,6 +16,10 @@ public class TestAssignation {
 
         afficherEtInterpreterArbre("b := 1 + 3 + 4");
         Memoire.afficherEtatMemoire();
+        
+        afficherEtInterpreterArbre("if a > 1 then return a");
+        Memoire.afficherEtatMemoire();
+        
         /*
         afficherEtInterpreterArbre("if true then c := a + 1 else d := 2 - 1");
         Memoire.afficherEtatMemoire();
