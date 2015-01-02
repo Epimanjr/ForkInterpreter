@@ -31,7 +31,7 @@ public class InterpreterArbre {
     }
 
     private static String interpreterNoeud(Noeud n) {
-        String res = "";
+        String res = "a";
         // ON SWITCH SUR LA VALEUR DU NOEUD POUR CHOISIR LA BONNE METHODE D'INTERPRETATION
         switch (n.getValeur()) {
             case ":=":
@@ -40,11 +40,11 @@ public class InterpreterArbre {
                 break;
             case "if":
                 System.out.println("    --> CONDITION");
-                interpreterCondition(n);
+                res = interpreterCondition(n);
                 break;
             case "while":
                 System.out.println("    --> BOUCLE");
-                interpreterBoucle(n);
+                res = interpreterBoucle(n);
                 break;
             case "return":
                 System.out.println("    ---> RETURN");
@@ -70,7 +70,8 @@ public class InterpreterArbre {
         Memoire.ajouter(nomDeVariable, valeurDeVariable);
     }
 
-    private static void interpreterCondition(Noeud n) {
+    private static String interpreterCondition(Noeud n) {
+        String res = "";
         // ON TROUVE LA VALEUR DU NOEUD DE LA CONDITION
         Noeud nCondition = n.getFils().get(0);
         String valeurCondition = trouverValeur(nCondition);
@@ -86,7 +87,7 @@ public class InterpreterArbre {
             if (valeurCondition.equals("true")) {
                 // ON INTERPRETE LE NOEUD VRAI
                 Noeud nVrai = n.getFils().get(1);
-                interpreterNoeud(nVrai);
+                res = interpreterNoeud(nVrai);
             }
 
             // SI C'EST FAUX
@@ -94,16 +95,17 @@ public class InterpreterArbre {
                 // ON INTERPRETE LE NOEUD FAUX S'IL EXISTE
                 if (n.getFils().size() == 3) {
                     Noeud nFaux = n.getFils().get(2);
-                    interpreterNoeud(nFaux);
+                    res = interpreterNoeud(nFaux);
                 }
             }
         } else {
             System.out.println("Problème : Une condition doit être une valeur booléenne !");
         }
-
+        return res;
     }
 
-    private static void interpreterBoucle(Noeud n) {
+    private static String interpreterBoucle(Noeud n) {
+        String res = "";
         // ON TROUVE LA VALEUR DU NOEUD DE LA CONDITION DE LA BOUCLE
         Noeud nCondition = n.getFils().get(0);
         String valeurCondition = trouverValeur(nCondition);
@@ -117,13 +119,13 @@ public class InterpreterArbre {
         if (valeurCondition.equals("true")) {
             // ON INTERPRETE LE NOEUD VRAI
             Noeud nVrai = n.getFils().get(1);
-            interpreterNoeud(nVrai);
+            res = interpreterNoeud(nVrai);
             // ON INTERPRETE A NOUVEAU LA BOUCLE (récursivité)
-            interpreterBoucle(n);
+            res = interpreterBoucle(n);
         } else {
             System.out.println("Fin de boucle !");
         }
-
+        return res;
     }
 
     private static String interpreterReturn(Noeud n) {

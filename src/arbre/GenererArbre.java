@@ -10,7 +10,7 @@ import exception.SyntaxErrorException;
  * @author Maxime BLAISE
  */
 public class GenererArbre {
-    
+
     public static boolean casReturn = false;
 
     /**
@@ -23,14 +23,14 @@ public class GenererArbre {
         ">=",
         "="
     };
-    
+
     public static String[] operateursPrioritaires = {
         "*",
         "/"
     };
-    
+
     public static String[] operateursSecondaires = {
-        "+", 
+        "+",
         "-"
     };
 
@@ -45,7 +45,7 @@ public class GenererArbre {
     public static Arbre genererArbreSyntaxique(String cmd) throws SyntaxErrorException {
         // Initialisation des booléens.
         casReturn = false;
-        
+
         return new Arbre(genererNoeud(cmd));
     }
 
@@ -66,6 +66,7 @@ public class GenererArbre {
         if (split.length == 1) {
             return new Noeud(line);
         }
+        
         // Cas assignation + opérations
         switch (split[1]) {
             case ":=":
@@ -76,6 +77,7 @@ public class GenererArbre {
 
         if (n == null) // Traitement des autres cas
         {
+            System.out.println("split:" + split[0]);
             switch (split[0]) {
                 case "if":
                     n = creerNoeudCondition(line);
@@ -97,24 +99,27 @@ public class GenererArbre {
                 }
             }
         }
-        
-   
+
         if (n == null) // Traitement des symboles + et - ensuite
         {
-            for(String operateur : operateursSecondaires) {
+            for (String operateur : operateursSecondaires) {
+                if (line.contains(operateur)) {
+                    n = creerNoeudCalcul(line, operateur);
+                }
+            }
+        }
+
+        if (n == null) // Traitement des symboles * et / d'abord (pour la priorité)
+        {
+            for (String operateur : operateursPrioritaires) {
                 if (line.contains(operateur)) {
                     n = creerNoeudCalcul(line, operateur);
                 }
             }
         }
         
-        if (n == null) // Traitement des symboles * et / d'abord (pour la priorité)
-        {
-            for(String operateur : operateursPrioritaires) {
-                if (line.contains(operateur)) {
-                    n = creerNoeudCalcul(line, operateur);
-                }
-            }
+        if (n == null) {
+            System.out.println("quand y'a un ; on est ici ! " + line);
         }
 
         if (n == null) { // Erreur de syntaxe
@@ -205,13 +210,13 @@ public class GenererArbre {
         }
 
         // Split
-        String[] split = line.split("\\"+operateur);
+        String[] split = line.split("\\" + operateur);
         String partieGauche = (split[0]).trim();
-        
+
         // Génération de la partie de droite
         // ATTENTION : Il faut tout prendre...
         String partieDroite = (split[1]).trim();
-        for(int i=2;i<split.length;i++) {
+        for (int i = 2; i < split.length; i++) {
             partieDroite += " + " + (split[i]).trim();
         }
 
@@ -240,7 +245,7 @@ public class GenererArbre {
 
         System.out.println(condition);
         System.out.println(instructionWhile);
-        
+
         // Création du Noeud
         Noeud n = new Noeud("while");
 
@@ -254,21 +259,21 @@ public class GenererArbre {
     private static Noeud creerNoeudReturn(String ligne) throws SyntaxErrorException {
         // Split avec return
         String[] splitReturn = ligne.split("return");
-        
+
         // Gestion des exceptions
-        if(splitReturn.length < 2) {
+        if (splitReturn.length < 2) {
             throw new SyntaxErrorException();
         }
-        
+
         // Création du Noeud
         Noeud n = new Noeud("return");
-        
+
         // Instruction à interpréter puis à afficher
         String instructionReturn = (splitReturn[1]).trim();
-        
+
         casReturn = true;
         n.ajouterFils(genererNoeud(instructionReturn));
-        
+
         // Le Noeud peut être retourné
         return n;
     }
