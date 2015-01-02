@@ -58,7 +58,7 @@ public class GenererArbre {
      */
     public static Noeud genererNoeud(String line) throws SyntaxErrorException {
         Noeud n = null;
-        System.out.println("on passe par ici avec: '" + line + "'");
+
         // On split la chaîne
         String[] split = line.split(" ");
 
@@ -289,8 +289,6 @@ public class GenererArbre {
     private static Noeud creerNoeudPointVirgule(String line) throws SyntaxErrorException {
         // Split
         String[] split = line.split(";");
-        System.out.println("ici:" + split[0]);
-        System.out.println("là:" + split[1]);
         String partieGauche = (split[0]).trim();
         String partieDroite = (split[1]).trim();
 
