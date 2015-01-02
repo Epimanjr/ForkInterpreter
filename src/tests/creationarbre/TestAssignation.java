@@ -14,7 +14,7 @@ public class TestAssignation {
         
         // Assignation avec opérateurs
         afficherArbreAvecCommande("a := 2 < 3");
-        afficherArbreAvecCommande("a := 2 < 3 <= 4");
+        /*afficherArbreAvecCommande("a := 2 < 3 <= 4");
         
         // Assignation avec calculs
         afficherArbreAvecCommande("a := 2 + 3");
@@ -25,7 +25,7 @@ public class TestAssignation {
         
         afficherArbreAvecCommande("a := 2 * 3 * 10");
         
-        afficherArbreAvecCommande("b := a * 3 * 10");
+        afficherArbreAvecCommande("b := a * 3 * 10");*/
     }
     
 }

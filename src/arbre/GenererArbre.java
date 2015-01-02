@@ -67,7 +67,7 @@ public class GenererArbre {
             return new Noeud(line);
         }
         
-        // Cas assignation + opérations
+        // Cas assignation
         switch (split[1]) {
             case ":=":
             case "::=":
@@ -75,9 +75,7 @@ public class GenererArbre {
                 break;
         }
 
-        if (n == null) // Traitement des autres cas
-        {
-            System.out.println("split:" + split[0]);
+        if (n == null) { // Traitement des "if" et "while"
             switch (split[0]) {
                 case "if":
                     n = creerNoeudCondition(line);
@@ -91,6 +89,20 @@ public class GenererArbre {
             }
         }
 
+        if (n == null) { // Traitement des ";"
+            if (line.contains(";")) {
+                n = creerNoeudPointVirgule(line);
+            }
+        }
+        
+        if (n == null) { // Traitement des return
+            switch (split[0]) {
+                case "return":
+                    n = creerNoeudReturn(line);
+                    break;
+            }
+        }  
+        
         if (n == null) // Traitement des opérateurs logiques
         {
             for (String operateur : operateursLogiques) {
@@ -116,10 +128,6 @@ public class GenererArbre {
                     n = creerNoeudCalcul(line, operateur);
                 }
             }
-        }
-        
-        if (n == null) {
-            System.out.println("quand y'a un ; on est ici ! " + line);
         }
 
         if (n == null) { // Erreur de syntaxe
@@ -273,6 +281,21 @@ public class GenererArbre {
 
         casReturn = true;
         n.ajouterFils(genererNoeud(instructionReturn));
+
+        // Le Noeud peut être retourné
+        return n;
+    }
+
+    private static Noeud creerNoeudPointVirgule(String line) throws SyntaxErrorException {
+        // Split
+        String[] split = line.split(";");
+        String partieGauche = (split[0]).trim();
+        String partieDroite = (split[1]).trim();
+
+        // Création du Noeud
+        Noeud n = new Noeud(";");
+        n.ajouterFils(genererNoeud(partieGauche));
+        n.ajouterFils(genererNoeud(partieDroite));
 
         // Le Noeud peut être retourné
         return n;
