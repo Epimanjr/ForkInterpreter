@@ -47,8 +47,12 @@ public class InterpreterArbre {
                 res = interpreterBoucle(n);
                 break;
             case "return":
-                System.out.println("    ---> RETURN");
+                System.out.println("    --> RETURN");
                 res = interpreterReturn(n);
+                break;
+            case ";":
+                System.out.println("    --> POINT-VIRGULE");
+                res = interpreterPointVirgule(n);
                 break;
             default:
                 System.out.println("    --> PAS ENCORE IMPLÉMENTÉ");
@@ -132,7 +136,19 @@ public class InterpreterArbre {
         String res = "";
         // ON INTERPRETE LE NOEUD RETURN
         Noeud nReturn = n.getFils().get(0);
-        res = trouverValeur(nReturn);        
+        res = trouverValeur(nReturn);
+        return res;
+    }
+
+    private static String interpreterPointVirgule(Noeud n) {
+        String res = "";
+        // ON INTERPRETE LE NOEUD GAUCHE
+        Noeud nGauche = n.getFils().get(0);
+        res = interpreterNoeud(nGauche);
+
+        // ON INTERPRETE LE NOEUD DROITE
+        Noeud nDroite = n.getFils().get(1);
+        res = res + "\n" + interpreterNoeud(nDroite);
         return res;
     }
 

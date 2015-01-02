@@ -17,8 +17,11 @@ public class TestAssignation {
         afficherEtInterpreterArbre("b := 1 + 3 + 4");
         Memoire.afficherEtatMemoire();
         
-        afficherEtInterpreterArbre("if a > 1 then return a");
+        afficherEtInterpreterArbre("if a < 10 then c := 1 ; return a");
         Memoire.afficherEtatMemoire();
+        
+        afficherEtInterpreterArbre("if a < 10 then return a ; c := 3");
+        Memoire.afficherEtatMemoire();        
         
         /*
         afficherEtInterpreterArbre("if true then c := a + 1 else d := 2 - 1");

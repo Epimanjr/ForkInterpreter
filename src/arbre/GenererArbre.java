@@ -58,7 +58,7 @@ public class GenererArbre {
      */
     public static Noeud genererNoeud(String line) throws SyntaxErrorException {
         Noeud n = null;
-
+        System.out.println("on passe par ici avec: '" + line + "'");
         // On split la chaîne
         String[] split = line.split(" ");
 
@@ -66,13 +66,15 @@ public class GenererArbre {
         if (split.length == 1) {
             return new Noeud(line);
         }
-        
-        // Cas assignation
-        switch (split[1]) {
-            case ":=":
-            case "::=":
-                n = creerNoeudAssignation(split);
-                break;
+
+        if (n == null) { // Traitement des assignations
+            if ((line.contains(":=")) && (!line.contains(";"))) {
+                switch (split[1]) {
+                    case ":=":
+                        n = creerNoeudAssignation(split);
+                        break;
+                }
+            }
         }
 
         if (n == null) { // Traitement des "if" et "while"
@@ -83,9 +85,6 @@ public class GenererArbre {
                 case "while":
                     n = creerNoeudIteration(line);
                     break;
-                case "return":
-                    n = creerNoeudReturn(line);
-                    break;
             }
         }
 
@@ -94,15 +93,15 @@ public class GenererArbre {
                 n = creerNoeudPointVirgule(line);
             }
         }
-        
-        if (n == null) { // Traitement des return
+
+        if (n == null) { // Traitement des "return"
             switch (split[0]) {
                 case "return":
                     n = creerNoeudReturn(line);
                     break;
             }
-        }  
-        
+        }
+
         if (n == null) // Traitement des opérateurs logiques
         {
             for (String operateur : operateursLogiques) {
@@ -139,6 +138,7 @@ public class GenererArbre {
     public static Noeud creerNoeudAssignation(String[] split) throws SyntaxErrorException {
         // Gestion des exceptions
         if (split.length < 3 || casReturn) {
+            System.out.println("coucou");
             throw new SyntaxErrorException();
         }
 
@@ -289,12 +289,15 @@ public class GenererArbre {
     private static Noeud creerNoeudPointVirgule(String line) throws SyntaxErrorException {
         // Split
         String[] split = line.split(";");
+        System.out.println("ici:" + split[0]);
+        System.out.println("là:" + split[1]);
         String partieGauche = (split[0]).trim();
         String partieDroite = (split[1]).trim();
 
         // Création du Noeud
         Noeud n = new Noeud(";");
         n.ajouterFils(genererNoeud(partieGauche));
+        casReturn = false;
         n.ajouterFils(genererNoeud(partieDroite));
 
         // Le Noeud peut être retourné
