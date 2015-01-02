@@ -129,7 +129,7 @@ public class Fenetre extends Application {
                     a = GenererArbre.genererArbreSyntaxique(text);
                     String res = a.interpreterArbre();
                     if (!res.equals("")) {
-                        affichage.appendText("# " + res + "\n");
+                        affichage.appendText(res + "\n");
                     }
                 } catch (SyntaxErrorException ex) {
                     Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);

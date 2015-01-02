@@ -18,7 +18,6 @@ public class InterpreterArbre {
      * @throws exception.SyntaxErrorException Erreur de syntaxe
      */
     public static String interpreterArbreSyntaxique(Arbre ast) throws SyntaxErrorException {
-
         String res = "";
 
         // ON RECUPÈRE LE NOEUD RACINE
@@ -31,7 +30,7 @@ public class InterpreterArbre {
     }
 
     private static String interpreterNoeud(Noeud n) {
-        String res = "a";
+        String res = "";
         // ON SWITCH SUR LA VALEUR DU NOEUD POUR CHOISIR LA BONNE METHODE D'INTERPRETATION
         switch (n.getValeur()) {
             case ":=":
@@ -125,7 +124,7 @@ public class InterpreterArbre {
             Noeud nVrai = n.getFils().get(1);
             res = interpreterNoeud(nVrai);
             // ON INTERPRETE A NOUVEAU LA BOUCLE (récursivité)
-            res = interpreterBoucle(n);
+            res = res + interpreterBoucle(n);
         } else {
             System.out.println("Fin de boucle !");
         }
