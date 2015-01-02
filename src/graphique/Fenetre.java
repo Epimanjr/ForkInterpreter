@@ -4,6 +4,11 @@
  */
 package graphique;
 
+import arbre.Arbre;
+import arbre.GenererArbre;
+import exception.SyntaxErrorException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -117,9 +122,18 @@ public class Fenetre extends Application {
                 // Ajout à la liste des commandes
                 listeCommandes.getItems().add(0, text);
                 // Ajout de la commande aux résultats
-                affichage.appendText(">>> "+text+"\n");
+                affichage.appendText(">>> " + text + "\n");
                 // Exécution
-                // TODO
+                try {
+                    Arbre a;
+                    a = GenererArbre.genererArbreSyntaxique(text);
+                    String res = a.interpreterArbre();
+                    if (!res.equals("")) {
+                        affichage.appendText("# " + res + "\n");
+                    }
+                } catch (SyntaxErrorException ex) {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
 
         }

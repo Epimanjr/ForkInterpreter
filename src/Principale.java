@@ -1,7 +1,8 @@
 
 import interpreter.Memoire;
 import java.util.Scanner;
-import static tests.creationarbre.TestArbre.interpreterArbre;
+import arbre.*;
+import exception.SyntaxErrorException;
 
 /**
  *
@@ -9,7 +10,7 @@ import static tests.creationarbre.TestArbre.interpreterArbre;
  */
 public class Principale {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SyntaxErrorException {
         // Permet la lecture au clavier
         Scanner sc = new Scanner(System.in);
         
@@ -19,7 +20,8 @@ public class Principale {
             System.out.print(">>> ");
             cmd = sc.nextLine();
             
-            interpreterArbre(cmd);
+            Arbre a = GenererArbre.genererArbreSyntaxique(cmd);
+            System.out.println(a.interpreterArbre());
             Memoire.afficherEtatMemoire();
             
             if(cmd.equals("EXIT")) {
