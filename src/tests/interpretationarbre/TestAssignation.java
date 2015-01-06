@@ -24,7 +24,13 @@ public class TestAssignation {
 
         afficherEtInterpreterArbre("while a < 10 do a := a + 1 ; return a");
         Memoire.afficherEtatMemoire();
-
+        
+        afficherEtInterpreterArbre("a := 3");
+        Memoire.afficherEtatMemoire();
+        
+        afficherEtInterpreterArbre("let a in a := 5 ; return a end");
+        Memoire.afficherEtatMemoire();
+        
         /*
          afficherEtInterpreterArbre("if true then c := a + 1 else d := 2 - 1");
          Memoire.afficherEtatMemoire();

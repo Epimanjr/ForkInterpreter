@@ -4,13 +4,14 @@ import exception.SyntaxErrorException;
 import interpreter.Memoire;
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.omg.CORBA.MARSHAL;
 
 /**
  *
  * @author Antoine NOSAL
  */
 public class InterpreterArbre {
-
+    
     /**
      * Méthode qui interprète un AST en paramètre.
      *
@@ -157,6 +158,7 @@ public class InterpreterArbre {
 
     private static String interpreterLet(Noeud n) {
         String res = "";
+        Memoire memoireFille = Memoire.getMemoireEnfant();
         if (n.getFils().size() == 3) {
             // CAS DE LA DÉCLARATION : let variable in com end
         } else {

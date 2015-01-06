@@ -10,7 +10,7 @@ public class TestLet {
     public static void main(String[] args) {
         // Let
         afficherArbreAvecCommande("a := 3");
-        //afficherArbreAvecCommande("let b in if true then return a end");
+        afficherArbreAvecCommande("let a in a := 5 end");
         afficherArbreAvecCommande("let b be a in if true then return a end");
     }
     
