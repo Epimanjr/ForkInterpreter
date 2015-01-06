@@ -53,6 +53,10 @@ public class InterpreterArbre {
                 System.out.println("    --> POINT-VIRGULE");
                 res = interpreterPointVirgule(n);
                 break;
+            case "let":
+                System.out.println("    --> LET");
+                res = interpreterLet(n);
+                break;
             default:
                 System.out.println("    --> PAS ENCORE IMPLÉMENTÉ");
                 break;
@@ -148,6 +152,16 @@ public class InterpreterArbre {
         // ON INTERPRETE LE NOEUD DROITE
         Noeud nDroite = n.getFils().get(1);
         res = res + "\n" + interpreterNoeud(nDroite);
+        return res;
+    }
+
+    private static String interpreterLet(Noeud n) {
+        String res = "";
+        if (n.getFils().size() == 3) {
+            // CAS DE LA DÉCLARATION : let variable in com end
+        } else {
+            // CAS DE L'ALIASING : let variable1 be variable2 in com end
+        }
         return res;
     }
 
