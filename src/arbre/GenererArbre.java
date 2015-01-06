@@ -85,6 +85,9 @@ public class GenererArbre {
                 case "while":
                     n = creerNoeudIteration(line);
                     break;
+                case "let":
+                    n = creerNoeudLet(line);
+                    break;
             }
         }
 
@@ -299,6 +302,44 @@ public class GenererArbre {
         n.ajouterFils(genererNoeud(partieDroite));
 
         // Le Noeud peut être retourné
+        return n;
+    }
+
+    private static Noeud creerNoeudLet(String line) throws SyntaxErrorException {
+        // Gestion des exceptions
+        if (!line.contains("in") || !line.contains("end")) {
+            System.out.println("toto");
+            throw new SyntaxErrorException();
+        }
+
+        //Création du noeud
+        Noeud n = new Noeud("let");
+        
+        // Différenciation entre déclaration et aliasing
+        if (!line.contains("be")) {
+            // Déclaration (let variable in com end)
+            // Split
+            String[] split = line.split("in");
+            String partieVariable = (split[0]).substring(4, split[0].length()).trim();
+            String partieCommande = (split[1]).substring(0, split[1].length() - 4).trim();
+            n.ajouterFils(genererNoeud(partieVariable));
+            n.ajouterFils(genererNoeud(partieCommande));
+        } else {
+            // Aliasing (let variable1 be variable2 in com end)
+            // Premier Split
+            String[] split = line.split("in");
+            String partieVariables = (split[0]).substring(4, split[0].length()).trim();
+            String partieCommande = (split[1]).substring(0, split[1].length() - 4).trim();
+            // Second Split de la partie avec les variables
+            String[] split2 = partieVariables.split("be");
+            String partieVariable1 = (split2[0]).trim();;
+            String partieVariable2 = (split2[1]).trim();;
+            n.ajouterFils(genererNoeud(partieVariable1));
+            n.ajouterFils(genererNoeud(partieVariable2));
+            n.ajouterFils(genererNoeud(partieCommande));
+        }
+
+        // On retourne le noeud
         return n;
     }
 }
