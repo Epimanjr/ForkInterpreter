@@ -20,7 +20,7 @@ public class Principale {
             System.out.print(">>> ");
             cmd = sc.nextLine();
             
-            if(cmd.equals("EXIT")) {
+            if(cmd.equals("EXIT") || cmd.equals("exit")) {
                 // Fermeture du programme
                 System.exit(1);
             }
