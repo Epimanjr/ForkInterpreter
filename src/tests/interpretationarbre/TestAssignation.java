@@ -53,7 +53,7 @@ public class TestAssignation {
          afficherEtInterpreterArbre("while e < 10 do e := e + 1 ");
          Memoire.afficherEtatMemoire();*/
         
-        afficherEtInterpreterArbre("return 4 > 2 and 3 > 2");
+        afficherEtInterpreterArbre("let a in a := 1 ; return a end ; return true");
         Memoire.afficherEtatMemoire();
     }
 

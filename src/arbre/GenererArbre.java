@@ -33,7 +33,7 @@ public class GenererArbre {
         "+",
         "-"
     };
-    
+
     public static String[] operateursBooleens = {
         "and",
         "or"
@@ -109,7 +109,7 @@ public class GenererArbre {
                     break;
             }
         }
-        
+
         if (n == null) // Traitement des opérateurs booléen
         {
             for (String operateur : operateursBooleens) {
@@ -322,40 +322,57 @@ public class GenererArbre {
     private static Noeud creerNoeudLet(String line) throws SyntaxErrorException {
         // Gestion des exceptions
         if (!line.contains("in") || !line.contains("end")) {
-            System.out.println("toto");
             throw new SyntaxErrorException();
         }
 
-        //Création du noeud
-        Noeud n = new Noeud("let");
+        Noeud n = null;
         
-        // Différenciation entre déclaration et aliasing
-        if (!line.contains("be")) {
-            // Déclaration (let variable in com end)
-            // Split
-            String[] split = line.split("in");
-            String partieVariable = (split[0]).substring(4, split[0].length()).trim();
-            String partieCommande = (split[1]).substring(0, split[1].length() - 4).trim();
-            n.ajouterFils(genererNoeud(partieVariable));
-            n.ajouterFils(genererNoeud(partieCommande));
-        } else {
-            // Aliasing (let variable1 be variable2 in com end)
-            // Premier Split
-            String[] split = line.split("in");
-            String partieVariables = (split[0]).substring(4, split[0].length()).trim();
-            String partieCommande = (split[1]).substring(0, split[1].length() - 4).trim();
-            // Second Split de la partie avec les variables
-            String[] split2 = partieVariables.split("be");
-            String partieVariable1 = (split2[0]).trim();;
-            String partieVariable2 = (split2[1]).trim();;
-            n.ajouterFils(genererNoeud(partieVariable1));
-            n.ajouterFils(genererNoeud(partieVariable2));
-            n.ajouterFils(genererNoeud(partieCommande));
-        }
+        String[] splitEnd = line.split("end");
 
+        System.out.println(splitEnd);
+        
+        if (splitEnd.length == 2) {
+            String partieAvantEnd = splitEnd[0].trim() + " end";
+            String partieApresEnd = splitEnd[1].trim();
+            if (partieApresEnd.charAt(0) == ';') {
+                partieApresEnd = partieApresEnd.substring(2, partieApresEnd.length()).trim();
+                // Création du Noeud ";"
+                n = new Noeud(";");
+                n.ajouterFils(genererNoeud(partieAvantEnd));
+                casReturn = false;
+                n.ajouterFils(genererNoeud(partieApresEnd));
+            }
+        } else {
+
+            // Création du noeud
+            n = new Noeud("let");
+
+            // Différenciation entre déclaration et aliasing
+            if (!line.contains("be")) {
+                // Déclaration (let variable in com end)
+                // Split
+                String[] split = line.split("in");
+                String partieVariable = (split[0]).substring(4, split[0].length()).trim();
+                String partieCommande = (split[1]).substring(0, split[1].length() - 4).trim();
+                n.ajouterFils(genererNoeud(partieVariable));
+                n.ajouterFils(genererNoeud(partieCommande));
+            } else {
+                // Aliasing (let variable1 be variable2 in com end)
+                // Premier Split
+                String[] split = line.split("in");
+                String partieVariables = (split[0]).substring(4, split[0].length()).trim();
+                String partieCommande = (split[1]).substring(0, split[1].length() - 4).trim();
+                // Second Split de la partie avec les variables
+                String[] split2 = partieVariables.split("be");
+                String partieVariable1 = (split2[0]).trim();;
+                String partieVariable2 = (split2[1]).trim();;
+                n.ajouterFils(genererNoeud(partieVariable1));
+                n.ajouterFils(genererNoeud(partieVariable2));
+                n.ajouterFils(genererNoeud(partieCommande));
+            }
+        }
         // On retourne le noeud
         return n;
     }
 
-  
 }
