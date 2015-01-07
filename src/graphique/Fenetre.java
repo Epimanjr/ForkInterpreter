@@ -191,7 +191,7 @@ public class Fenetre extends Application {
             this.getChildren().add(vider);
 
             // load the image
-            Image image = new Image("tpi.png");
+            Image image = new Image("tpi.jpg");
 
             // simple displays ImageView the image as is
             ImageView iv1 = new ImageView();
