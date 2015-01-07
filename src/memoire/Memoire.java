@@ -23,7 +23,7 @@ public class Memoire {
      * Mémoire du programme. Constructeur privé, car on en a besoin que d'une
      * seule.
      */
-    public Memoire() {
+    private Memoire() {
 
     }
 
