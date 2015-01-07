@@ -94,7 +94,7 @@ public class Fenetre extends Application {
 
         public MainGroup() {
             // Label indicatif
-            label = new Label("Saisir une commande ici (↑ et ↓ pour naviguer l'historique)");
+            label = new Label("Saisir une commande ici (↑ et ↓ pour naviguer dans l'historique)");
             label.setPrefSize(Config.largeur * 8 / 10, Config.hauteurLabel);
             label.setTranslateX(5);
             label.setTranslateY(5);
