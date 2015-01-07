@@ -70,6 +70,7 @@ public class Fenetre extends Application {
         private final TextArea affichage;
         private final TableView memoire;
         private final Button exporter;
+        private final Button exporterTout;
         private final Button importer;
         // Fin des éléments
 
@@ -129,7 +130,7 @@ public class Fenetre extends Application {
                 actionImporter();
             });
             this.getChildren().add(importer);
-            
+
             // Exportation d'une ou de plusieurs commandes
             exporter = new Button("Exporter");
             exporter.setTranslateX(100);
@@ -138,6 +139,15 @@ public class Fenetre extends Application {
                 actionExporter();
             });
             this.getChildren().add(exporter);
+
+            // Exportation de toutes les commandes
+            exporterTout = new Button("Exporter tout");
+            exporterTout.setTranslateX(180);
+            exporterTout.setTranslateY(Config.hauteur - 27);
+            exporterTout.setOnAction((ActionEvent event) -> {
+                actionExporterTout();
+            });
+            this.getChildren().add(exporterTout);
         }
 
         /**
@@ -167,7 +177,7 @@ public class Fenetre extends Application {
                     Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-
+            saisie.setText("");
         }
 
         /**
@@ -219,11 +229,11 @@ public class Fenetre extends Application {
                     BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
 
                     // Récupération des valeurs à importer
-                    while(br.ready()) {
+                    while (br.ready()) {
                         String commande = br.readLine();
                         System.out.println(commande);
                     }
-                    
+
                     br.close();
                     JOptionPane.showMessageDialog(null, "Importation terminée", "Succès", JOptionPane.INFORMATION_MESSAGE);
 
@@ -234,6 +244,37 @@ public class Fenetre extends Application {
                 JOptionPane.showMessageDialog(null, "Erreur", "Fichier incorrect", JOptionPane.ERROR_MESSAGE);
             }
             System.out.println("*** FIN DE L'IMPORTATION ***");
+        }
+
+        private void actionExporterTout() {
+// On demande à l'utilisateur où souhaite-t-il l'exporter
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Exporter vos commandes");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Péchoux FILE", "*.pechoux"));
+            File file = fc.showSaveDialog(null);
+            if (file != null) {
+                System.out.println("*** DEBUT DE L'EXPORTATION ***");
+                try {
+                    PrintWriter pw = new PrintWriter(new FileWriter(file.getAbsolutePath()));
+
+                    // Récupération des valeurs à exporter
+                    Iterator it = listeCommandes.getSelectionModel().getSelectedItems().iterator();
+                    while (it.hasNext()) {
+                        String commande = (String) it.next();
+                        System.out.println("--> " + commande);
+                        pw.println(commande);
+                    }
+
+                    pw.close();
+                    JOptionPane.showMessageDialog(null, "Exportation terminée", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Erreur", "Fichier incorrect", JOptionPane.ERROR_MESSAGE);
+            }
+            System.out.println("*** FIN DE L'EXPORTATION ***");
         }
     }
 }
