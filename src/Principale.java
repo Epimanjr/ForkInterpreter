@@ -1,5 +1,5 @@
 
-import interpreter.Memoire;
+import memoire.Memoire;
 import java.util.Scanner;
 import arbre.*;
 import exception.SyntaxErrorException;

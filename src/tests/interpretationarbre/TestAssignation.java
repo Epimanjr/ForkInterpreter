@@ -3,7 +3,7 @@
  */
 package tests.interpretationarbre;
 
-import interpreter.Memoire;
+import memoire.Memoire;
 import static tests.creationarbre.TestArbre.afficherEtInterpreterArbre;
 
 public class TestAssignation {
