@@ -13,9 +13,12 @@ import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
  */
 public class TestIteration {
 
+    /**
+     * Suite de tests (non exhaustive)
+     * @param args 
+     */
     public static void main(String[] args) {
         afficherArbreAvecCommande("while 2 + 3 > 4 do 2 + 3");
-
     }
 
 }

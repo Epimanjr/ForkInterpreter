@@ -20,11 +20,6 @@ public class Memoire {
     private static HashMap<String, String> memoire = new HashMap<>();
 
     /**
-     * Mémoire parent
-     */
-    private static Memoire memoireEnfant = new Memoire();
-
-    /**
      * Mémoire du programme. Constructeur privé, car on en a besoin que d'une
      * seule.
      */
@@ -32,31 +27,26 @@ public class Memoire {
 
     }
 
-    public Memoire(Memoire m) {
-        this.memoireEnfant = m;
-    }
-
     /**
      * Méthode qui permet de récupérer la mémoire.
-     *
      * @return la mémoire. (unique)
      */
     public static HashMap<String, String> getMemoire() {
         return Memoire.memoire;
     }
 
-    public static HashMap<String, String> getMemoireCourante() {
-        if (MemoiresLet.MemoireLetCourante == 0) {
-            return Memoire.memoire;
-        } else {
-            return MemoiresLet.getMemoireLetCourante();
-        }
-    }
-
+    /**
+     * Affiche l'état de la mémoire.
+     */
     public static void afficherEtatMemoire() {
         System.out.println(Memoire.memoire + "\n");
     }
 
+    /**
+     * Méthode qui ajoute une variable avec sa valeur en mémoire
+     * @param nom Nom de la variable
+     * @param valeur Valeur de la variable
+     */
     public static void ajouter(String nom, String valeur) {
         boolean vtemp = false;
         // On recherche d'abord dans les variables temporaires
@@ -74,14 +64,6 @@ public class Memoire {
         if (vtemp == false) {
             Memoire.memoire.put(nom,valeur);
         }
-    }
-
-    public Memoire memoire() {
-        return this;
-    }
-
-    public static Memoire getMemoireEnfant() {
-        return Memoire.memoireEnfant;
     }
 
 }

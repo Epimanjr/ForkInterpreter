@@ -2,11 +2,8 @@ package arbre;
 
 import exception.SyntaxErrorException;
 import memoire.Memoire;
-import memoire.MemoiresLet;
-import java.util.ArrayList;
 import java.util.Arrays;
 import memoire.ValeurTemporaire;
-import org.omg.CORBA.MARSHAL;
 
 /**
  *
@@ -32,6 +29,11 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui interprète un noeud et renvoie le résultat de l'interprétation
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String interpreterNoeud(Noeud n) {
         String res = "";
         // ON SWITCH SUR LA VALEUR DU NOEUD POUR CHOISIR LA BONNE METHODE D'INTERPRETATION
@@ -67,6 +69,11 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui interprète l'assignation
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static void interpreterAssignation(Noeud n) {
         // ON TROUVE LA VALEUR DANS LE NOEUD GAUCHE
         Noeud nGauche = n.getFils().get(1);
@@ -80,8 +87,14 @@ public class InterpreterArbre {
         Memoire.ajouter(nomDeVariable, valeurDeVariable);
     }
 
+    /**
+     * Méthode qui interprète un if
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String interpreterCondition(Noeud n) {
         String res = "";
+        
         // ON TROUVE LA VALEUR DU NOEUD DE LA CONDITION
         Noeud nCondition = n.getFils().get(0);
         String valeurCondition = trouverValeur(nCondition);
@@ -91,11 +104,6 @@ public class InterpreterArbre {
             valeurCondition = vTest;
         }
 
-        /* OLD:
-         // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
-         if (Memoire.getMemoire().containsKey(valeurCondition)) {
-         valeurCondition = Memoire.getMemoire().get(valeurCondition);
-         } */
         // SI LA CONDITION EST BIEN, AU FINAL, TRUE OU FALSE
         if ((valeurCondition.equals("true")) || (valeurCondition.equals("false"))) {
             // SI C'EST VRAI
@@ -119,6 +127,11 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui interprète un while
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String interpreterBoucle(Noeud n) {
         String res = "";
         // ON TROUVE LA VALEUR DU NOEUD DE LA CONDITION DE LA BOUCLE
@@ -148,6 +161,11 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui interprète un return
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String interpreterReturn(Noeud n) {
         String res = "";
         // ON INTERPRETE LE NOEUD RETURN
@@ -156,6 +174,11 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui interprète un noeud ";" qui sépare deux commandes
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String interpreterPointVirgule(Noeud n) {
         String res = "";
         // ON INTERPRETE LE NOEUD GAUCHE
@@ -168,6 +191,12 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui interprète la déclaration d'une variable locale
+     * ou d'un aliasing
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String interpreterLet(Noeud n) {
         String res = "";
         String nom1, nom2;
@@ -190,6 +219,12 @@ public class InterpreterArbre {
         return res;
     }
 
+    /**
+     * Méthode qui évalue un noeud
+     * (soit une valeur, soit une variable, soit une expression arithmétique ou booléenne)
+     * @param n Noeud à interpréter
+     * @return résultat de l'interprétation
+     */
     private static String trouverValeur(Noeud n) {
         String v = null;
         String vNoeud = n.getValeur();
@@ -212,6 +247,12 @@ public class InterpreterArbre {
         return v;
     }
 
+    /**
+     * Méthode identifiant le type d'une donnée
+     * Renvoie true si c'est entier ou booléen
+     * @param s chaine contenant la donnée
+     * @return booleen à true si la donnée est entière ou booléenne
+     */
     public static boolean estEntierOuBooleen(String s) {
         boolean res = false;
         switch (s) {
@@ -233,12 +274,11 @@ public class InterpreterArbre {
         return res;
     }
 
-    private static boolean estEnMemoire(String s) {
-        boolean res = false;
-        res = Memoire.getMemoire().containsKey(s);
-        return res;
-    }
-
+    /**
+     * Méthode qui renvoie la valeur en mémoire globale ou temporaire
+     * @param s nom de la variable
+     * @return valeur de la variable
+     */
     public static String valeurEnMemoire(String s) {
         // On recherche d'abord dans les variables temporaires
         if (!Memoire.memoireLet.isEmpty()) {
@@ -258,6 +298,12 @@ public class InterpreterArbre {
         return null;
     }
 
+    /**
+     * Méthode effectuant une opération arithmétique ou booléenne
+     * @param n Noeud de l'opération
+     * @param vNoeud valeur du Noeud
+     * @return résultat de l'opération
+     */
     private static String faireOperation(Noeud n, String vNoeud) {
         Integer i;
         Boolean b;

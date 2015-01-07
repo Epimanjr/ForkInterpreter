@@ -5,7 +5,7 @@ package memoire;
 
 /**
  *
- * @author Maxime
+ * @author Maxime BLAISE
  */
 public class ValeurTemporaire {
     

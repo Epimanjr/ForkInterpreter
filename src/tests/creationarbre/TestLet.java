@@ -6,7 +6,11 @@ package tests.creationarbre;
 import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
 
 public class TestLet {
-    
+
+    /**
+     * Suite de tests (non exhaustive)
+     * @param args 
+     */
     public static void main(String[] args) {
         // Let
         afficherArbreAvecCommande("a := 3");

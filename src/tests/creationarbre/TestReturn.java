@@ -7,6 +7,10 @@ import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
 
 public class TestReturn {
 
+    /**
+     * Suite de tests (non exhaustive)
+     * @param args 
+     */
     public static void main(String[] args) {
         // Returns
         afficherArbreAvecCommande("a := 3");

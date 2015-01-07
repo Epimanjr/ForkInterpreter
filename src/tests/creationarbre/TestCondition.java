@@ -12,7 +12,11 @@ import static tests.creationarbre.TestArbre.afficherArbreAvecCommande;
  * @author blaise
  */
 public class TestCondition {
-    
+
+    /**
+     * Suite de tests (non exhaustive)
+     * @param args 
+     */
     public static void main(String[] args) {
         afficherArbreAvecCommande("if 2 + 3 > 4 then a else 2 + 3");
         
