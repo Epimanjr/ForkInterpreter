@@ -19,15 +19,17 @@ public class Principale {
             // Lecture de la commande
             System.out.print(">>> ");
             cmd = sc.nextLine();
+
+            if(cmd.equals("EXIT")) {
+                // Fermeture du programme
+                System.exit(1);
+            }
             
             Arbre a = GenererArbre.genererArbreSyntaxique(cmd);
             System.out.println(a.interpreterArbre());
             Memoire.afficherEtatMemoire();
             
-            if(cmd.equals("EXIT")) {
-                // Fermeture du programme
-                System.exit(1);
-            }
+            
             
         }
     }
