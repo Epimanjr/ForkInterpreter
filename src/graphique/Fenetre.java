@@ -231,6 +231,9 @@ public class Fenetre extends Application {
                 System.out.println("Veuillez saisir quelque chose !");
                 JOptionPane.showMessageDialog(null, "Veuillez saisir quelque chose !", "Erreur commande", JOptionPane.ERROR_MESSAGE);
             } else {
+                if(text.equals("exit") || text.equals("EXIT")) {
+                    System.exit(0);
+                }
                 System.out.println("Exécution de : " + text);
                 // Execution de la commande
                 executerCommande(text);
