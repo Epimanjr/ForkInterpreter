@@ -56,6 +56,7 @@ public class Fenetre extends Application {
         primaryStage.setTitle(titre);
 
         Scene scene = new Scene(root, Config.largeur, Config.hauteur);
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -117,7 +118,7 @@ public class Fenetre extends Application {
             listeCommandes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             listeCommandes.setTranslateX(5);
             listeCommandes.setTranslateY(40 + saisie.getTranslateY() + Config.hauteurSaisie);
-            listeCommandes.setPrefSize(Config.largeur * 4 / 10 - 5, Config.hauteur - listeCommandes.getTranslateY() - 30);
+            listeCommandes.setPrefSize(Config.largeur * 4 / 10 - 5, Config.hauteur - listeCommandes.getTranslateY() - 150);
             this.getChildren().add(listeCommandes);
 
             label2 = new Label("Historique des résultats");
@@ -130,7 +131,7 @@ public class Fenetre extends Application {
             affichage = new TextArea();
             affichage.setTranslateX(10 + listeCommandes.getPrefWidth());
             affichage.setTranslateY(listeCommandes.getTranslateY());
-            affichage.setPrefSize(listeCommandes.getPrefWidth(), listeCommandes.getPrefHeight());
+            affichage.setPrefSize(listeCommandes.getPrefWidth(), listeCommandes.getPrefHeight() + 120);
             this.getChildren().add(affichage);
 
             label3 = new Label("Mémoire");
@@ -152,7 +153,7 @@ public class Fenetre extends Application {
             memoire.getColumns().addAll(nomCol, valeurCol);
             memoire.setTranslateX(15 + listeCommandes.getPrefWidth() * 2);
             memoire.setTranslateY(listeCommandes.getTranslateY());
-            memoire.setPrefSize(listeCommandes.getPrefWidth() / 2 - 10, listeCommandes.getPrefHeight());
+            memoire.setPrefSize(listeCommandes.getPrefWidth() / 2, listeCommandes.getPrefHeight() + 120);
             this.getChildren().add(memoire);
 
             // Importation d'une ou de plusieurs commandes
@@ -195,8 +196,8 @@ public class Fenetre extends Application {
 
             // simple displays ImageView the image as is
             ImageView iv1 = new ImageView();
-            iv1.setTranslateX(Config.largeur);
-            iv1.setTranslateY(5);
+            iv1.setTranslateX(110);
+            iv1.setTranslateY(Config.hauteur - 145);
             iv1.setImage(image);
             this.getChildren().add(iv1);
         }

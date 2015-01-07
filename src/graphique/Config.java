@@ -17,7 +17,7 @@ public final class Config {
     /**
      * Hauteur de la fenêtre.
      */
-    public static final int hauteur = 400;
+    public static final int hauteur = 550;
     
     /**
      * Hauteur du label.
