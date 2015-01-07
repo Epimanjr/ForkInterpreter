@@ -33,6 +33,11 @@ public class GenererArbre {
         "+",
         "-"
     };
+    
+    public static String[] operateursBooleens = {
+        "and",
+        "or"
+    };
 
     /**
      * Méthode qui génère l'AST en fonction de la ligne saisie par
@@ -102,6 +107,15 @@ public class GenererArbre {
                 case "return":
                     n = creerNoeudReturn(line);
                     break;
+            }
+        }
+        
+        if (n == null) // Traitement des opérateurs booléen
+        {
+            for (String operateur : operateursBooleens) {
+                if (line.contains(operateur)) {
+                    n = creerNoeudOperateur(line, operateur);
+                }
             }
         }
 
@@ -342,4 +356,6 @@ public class GenererArbre {
         // On retourne le noeud
         return n;
     }
+
+  
 }
