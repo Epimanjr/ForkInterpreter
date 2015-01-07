@@ -6,7 +6,6 @@ package graphique;
 
 import arbre.Arbre;
 import arbre.GenererArbre;
-import com.sun.javafx.collections.ElementObservableListDecorator;
 import exception.SyntaxErrorException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
@@ -24,7 +22,6 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,6 +33,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
@@ -48,7 +47,7 @@ import memoire.Variable;
  */
 public class Fenetre extends Application {
 
-    public static String titre = "Interpréteur by Péchoux";
+    public static String titre = "TPI : The Péchoux Interpreter";
 
     @Override
     public void start(Stage primaryStage) {
@@ -75,6 +74,8 @@ public class Fenetre extends Application {
         // Début des éléments de la page
         private final Label label;
         private final Label label1;
+        private final Label label2;
+        private final Label label3;
         private final TextField saisie;
         private final ListView listeCommandes;
         private final TextArea affichage;
@@ -119,6 +120,12 @@ public class Fenetre extends Application {
             listeCommandes.setPrefSize(Config.largeur * 4 / 10 - 5, Config.hauteur - listeCommandes.getTranslateY() - 30);
             this.getChildren().add(listeCommandes);
 
+            label2 = new Label("Historique des résultats");
+            label2.setPrefSize(Config.largeur * 4 / 10 - 5, Config.hauteurLabel);
+            label2.setTranslateX(10 + listeCommandes.getPrefWidth());
+            label2.setTranslateY(20 + saisie.getTranslateY() + Config.hauteurSaisie);
+            this.getChildren().add(label2);
+
             // L'affichage des résultats
             affichage = new TextArea();
             affichage.setTranslateX(10 + listeCommandes.getPrefWidth());
@@ -126,16 +133,22 @@ public class Fenetre extends Application {
             affichage.setPrefSize(listeCommandes.getPrefWidth(), listeCommandes.getPrefHeight());
             this.getChildren().add(affichage);
 
+            label3 = new Label("Mémoire");
+            label3.setPrefSize(Config.largeur * 4 / 10 - 5, Config.hauteurLabel);
+            label3.setTranslateX(15 + listeCommandes.getPrefWidth() * 2);
+            label3.setTranslateY(20 + saisie.getTranslateY() + Config.hauteurSaisie);
+            this.getChildren().add(label3);
+
             // Affichage de la mémoire
             memoire = new TableView();
             memoire.setEditable(false);
             // Ajout des colonnes
             TableColumn nomCol = new TableColumn("Nom");
             nomCol.setCellValueFactory(
-                new PropertyValueFactory<>("Nom"));
+                    new PropertyValueFactory<>("Nom"));
             TableColumn valeurCol = new TableColumn("Valeur");
             valeurCol.setCellValueFactory(
-                new PropertyValueFactory<>("Valeur"));
+                    new PropertyValueFactory<>("Valeur"));
             memoire.getColumns().addAll(nomCol, valeurCol);
             memoire.setTranslateX(15 + listeCommandes.getPrefWidth() * 2);
             memoire.setTranslateY(listeCommandes.getTranslateY());
@@ -170,12 +183,22 @@ public class Fenetre extends Application {
             this.getChildren().add(exporterTout);
 
             vider = new Button("Vider");
-            vider.setTranslateX(350);
+            vider.setTranslateX(600);
             vider.setTranslateY(Config.hauteur - 27);
             vider.setOnAction((ActionEvent event) -> {
                 actionVider();
             });
             this.getChildren().add(vider);
+
+            // load the image
+            Image image = new Image("tpi.png");
+
+            // simple displays ImageView the image as is
+            ImageView iv1 = new ImageView();
+            iv1.setTranslateX(Config.largeur);
+            iv1.setTranslateY(5);
+            iv1.setImage(image);
+            this.getChildren().add(iv1);
         }
 
         /**
