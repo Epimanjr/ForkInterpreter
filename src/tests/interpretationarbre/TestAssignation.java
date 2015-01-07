@@ -23,7 +23,7 @@ public class TestAssignation {
         Memoire.afficherEtatMemoire();
 
         afficherEtInterpreterArbre("while a < 10 do a := a + 1 ; return a");
-        Memoire.afficherEtatMemoire();*/
+        Memoire.afficherEtatMemoire();
         
         afficherEtInterpreterArbre("a := 10");
         Memoire.afficherEtatMemoire();
@@ -32,15 +32,15 @@ public class TestAssignation {
         Memoire.afficherEtatMemoire();
         
         afficherEtInterpreterArbre("return a");
-        Memoire.afficherEtatMemoire();
+        Memoire.afficherEtatMemoire();*/
         
         afficherEtInterpreterArbre("a := 10");
         Memoire.afficherEtatMemoire();
         
-        afficherEtInterpreterArbre("let b be a in b := b +  5 ; return b end");
+        afficherEtInterpreterArbre("let b be a in b := b + 5 ; return b end");
         Memoire.afficherEtatMemoire();
         
-        afficherEtInterpreterArbre("return b");
+        afficherEtInterpreterArbre("return a");
         Memoire.afficherEtatMemoire();
         
         /*

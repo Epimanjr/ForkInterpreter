@@ -161,25 +161,12 @@ public class Fenetre extends Application {
                 JOptionPane.showMessageDialog(null, "Veuillez saisir quelque chose !", "Erreur commande", JOptionPane.ERROR_MESSAGE);
             } else {
                 System.out.println("Exécution de : " + text);
-                // Ajout à la liste des commandes
-                listeCommandes.getItems().add(0, text);
-                // Ajout de la commande aux résultats
-                affichage.appendText(">>> " + text + "\n");
-                // Exécution
-                try {
-                    Arbre a;
-                    a = GenererArbre.genererArbreSyntaxique(text);
-                    String res = a.interpreterArbre();
-                    if (!res.equals("")) {
-                        affichage.appendText(res + "\n");
-                    }
-                } catch (SyntaxErrorException ex) {
-                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                // Execution de la commande
+                executerCommande(text);
             }
             saisie.setText("");
         }
-        
+
         private File recupererFichier() {
             FileChooser fc = new FileChooser();
             fc.setTitle("Exporter vos commandes");
@@ -187,7 +174,7 @@ public class Fenetre extends Application {
             File file = fc.showSaveDialog(null);
             return file;
         }
-        
+
         private void ecrireAvecIterateur(File file, Iterator it) {
             if (file != null) {
                 System.out.println("*** DEBUT DE L'EXPORTATION ***");
@@ -195,7 +182,6 @@ public class Fenetre extends Application {
                     PrintWriter pw = new PrintWriter(new FileWriter(file.getAbsolutePath()));
 
                     // Récupération des valeurs à exporter
-                   
                     while (it.hasNext()) {
                         String commande = (String) it.next();
                         System.out.println("--> " + commande);
@@ -242,6 +228,7 @@ public class Fenetre extends Application {
                     while (br.ready()) {
                         String commande = br.readLine();
                         System.out.println(commande);
+                        executerCommande(commande);
                     }
 
                     br.close();
@@ -261,6 +248,24 @@ public class Fenetre extends Application {
             File file = recupererFichier();
             Iterator it = listeCommandes.getItems().iterator();
             ecrireAvecIterateur(file, it);
+        }
+
+        private void executerCommande(String text) {
+            // Ajout à la liste des commandes
+            listeCommandes.getItems().add(0, text);
+            // Ajout de la commande aux résultats
+            affichage.appendText(">>> " + text + "\n");
+            // Exécution
+            try {
+                Arbre a;
+                a = GenererArbre.genererArbreSyntaxique(text);
+                String res = a.interpreterArbre();
+                if (!res.equals("")) {
+                    affichage.appendText(res + "\n");
+                }
+            } catch (SyntaxErrorException ex) {
+                Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
