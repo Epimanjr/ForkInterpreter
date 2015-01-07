@@ -1,8 +1,8 @@
 package arbre;
 
 import exception.SyntaxErrorException;
-import interpreter.Memoire;
-import interpreter.MemoiresLet;
+import memoire.Memoire;
+import memoire.MemoiresLet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.omg.CORBA.MARSHAL;
@@ -12,7 +12,7 @@ import org.omg.CORBA.MARSHAL;
  * @author Antoine NOSAL
  */
 public class InterpreterArbre {
-    
+
     /**
      * Méthode qui interprète un AST en paramètre.
      *
@@ -218,9 +218,22 @@ public class InterpreterArbre {
     }
 
     private static String valeurEnMemoire(String s) {
-        String res = "";
-        res = Memoire.getMemoire().get(s);
-        return res;
+        // On recherche d'abord dans les variables temporaires
+        if (!Memoire.memoireLet.isEmpty()) {
+            for (int i = Memoire.memoireLet.size() - 1; i > 0; i--) {
+               if(Memoire.memoireLet.get(i).getNom().equals(s)) {
+                   return Memoire.memoireLet.get(i).getValeur();
+               }
+            }
+        }
+        
+        // Si on arrive ici, il faut chercher dans la mémoire globale
+        if(Memoire.getMemoire().containsKey(s)) {
+            return Memoire.getMemoire().get(s);
+        }
+        
+        // On a pas trouvé s dans la mémoire
+        return null;
     }
 
     private static String faireOperation(Noeud n, String vNoeud) {
