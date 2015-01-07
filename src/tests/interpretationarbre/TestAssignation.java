@@ -32,7 +32,7 @@ public class TestAssignation {
         Memoire.afficherEtatMemoire();
         
         afficherEtInterpreterArbre("return a");
-        Memoire.afficherEtatMemoire();*/
+        Memoire.afficherEtatMemoire();
         
         afficherEtInterpreterArbre("a := 10");
         Memoire.afficherEtatMemoire();
@@ -52,6 +52,9 @@ public class TestAssignation {
         
          afficherEtInterpreterArbre("while e < 10 do e := e + 1 ");
          Memoire.afficherEtatMemoire();*/
+        
+        afficherEtInterpreterArbre("return 4 > 2 and 3 > 2");
+        Memoire.afficherEtatMemoire();
     }
 
 }

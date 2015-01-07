@@ -200,7 +200,7 @@ public class InterpreterArbre {
         } else if (vTest != null) {
             v = vTest;
         } else {
-            String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<", "="};
+            String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<", "=", "and", "or"};
             // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ, ON CONTINUE (récursivité)
             if (Arrays.asList(symbolesAcceptables).contains(vNoeud)) {
                 // EN FONCTION DU SYMBOLE, ON EFFECTUE LA BONNE OPÉRATION
@@ -312,6 +312,16 @@ public class InterpreterArbre {
             // EGALITE
             case "=":
                 b = Integer.parseInt(trouverValeur(nDroite)) == Integer.parseInt(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            // AND
+            case "and":
+                b = Boolean.valueOf(trouverValeur(nDroite)) && Boolean.valueOf(trouverValeur(nGauche));
+                res = b.toString();
+                break;
+            // OR
+            case "or":
+                b = Boolean.valueOf(trouverValeur(nDroite)) || Boolean.valueOf(trouverValeur(nGauche));
                 res = b.toString();
                 break;
             default:
