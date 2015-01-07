@@ -6,6 +6,7 @@ package graphique;
 
 import arbre.Arbre;
 import arbre.GenererArbre;
+import com.sun.javafx.collections.ElementObservableListDecorator;
 import exception.SyntaxErrorException;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,10 +14,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -25,12 +31,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
+import memoire.Memoire;
+import memoire.Variable;
 
 /**
  *
@@ -38,7 +48,7 @@ import javax.swing.JOptionPane;
  */
 public class Fenetre extends Application {
 
-    public static String titre = "Projet original de Java 2014";
+    public static String titre = "Interpréteur by Péchoux";
 
     @Override
     public void start(Stage primaryStage) {
@@ -72,6 +82,7 @@ public class Fenetre extends Application {
         private final Button exporter;
         private final Button exporterTout;
         private final Button importer;
+        private final Button vider;
         // Fin des éléments
 
         public MainGroup() {
@@ -117,6 +128,15 @@ public class Fenetre extends Application {
 
             // Affichage de la mémoire
             memoire = new TableView();
+            memoire.setEditable(false);
+            // Ajout des colonnes
+            TableColumn nomCol = new TableColumn("Nom");
+            nomCol.setCellValueFactory(
+                new PropertyValueFactory<>("Nom"));
+            TableColumn valeurCol = new TableColumn("Valeur");
+            valeurCol.setCellValueFactory(
+                new PropertyValueFactory<>("Valeur"));
+            memoire.getColumns().addAll(nomCol, valeurCol);
             memoire.setTranslateX(15 + listeCommandes.getPrefWidth() * 2);
             memoire.setTranslateY(listeCommandes.getTranslateY());
             memoire.setPrefSize(listeCommandes.getPrefWidth() / 2 - 10, listeCommandes.getPrefHeight());
@@ -148,6 +168,14 @@ public class Fenetre extends Application {
                 actionExporterTout();
             });
             this.getChildren().add(exporterTout);
+
+            vider = new Button("Vider");
+            vider.setTranslateX(350);
+            vider.setTranslateY(Config.hauteur - 27);
+            vider.setOnAction((ActionEvent event) -> {
+                actionVider();
+            });
+            this.getChildren().add(vider);
         }
 
         /**
@@ -163,6 +191,18 @@ public class Fenetre extends Application {
                 System.out.println("Exécution de : " + text);
                 // Execution de la commande
                 executerCommande(text);
+                // Affichage de la mémoire
+
+                ArrayList<Variable> liste = new ArrayList<>();
+                Set cles = Memoire.getMemoire().keySet();
+                Iterator it = cles.iterator();
+                while (it.hasNext()) {
+                    String cle = (String) it.next(); // tu peux typer plus finement ici
+                    String valeur = Memoire.getMemoire().get(cle); // tu peux typer plus finement ici
+                    liste.add(new Variable(cle, valeur));
+                }
+                ObservableList<Variable> data = FXCollections.observableArrayList(liste);
+                memoire.setItems(data);
             }
             saisie.setText("");
         }
@@ -181,9 +221,17 @@ public class Fenetre extends Application {
                 try {
                     PrintWriter pw = new PrintWriter(new FileWriter(file.getAbsolutePath()));
 
+                    ArrayList<String> listeCommandesTemporaires = new ArrayList<>();
                     // Récupération des valeurs à exporter
                     while (it.hasNext()) {
-                        String commande = (String) it.next();
+
+                        listeCommandesTemporaires.add((String) it.next());
+                        System.out.println("Bonjour");
+                    }
+
+                    System.out.println("Taille de la liste à exporter : " + listeCommandesTemporaires.size());
+                    for (int i = listeCommandesTemporaires.size() - 1; i >= 0; i--) {
+                        String commande = listeCommandesTemporaires.get(i);
                         System.out.println("--> " + commande);
                         pw.println(commande);
                     }
@@ -266,6 +314,16 @@ public class Fenetre extends Application {
             } catch (SyntaxErrorException ex) {
                 Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+
+        private void actionVider() {
+            System.out.println("Vidage de l'écran !");
+            // Vidage de la liste des commandes
+            ObservableList<String> names = FXCollections.observableArrayList("");
+            listeCommandes.setItems(names);
+            // Vidage des résultats
+            affichage.setText("");
+            // Vidage de la mémoire
         }
     }
 }
