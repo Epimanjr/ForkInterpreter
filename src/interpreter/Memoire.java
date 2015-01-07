@@ -38,6 +38,14 @@ public class Memoire {
         return Memoire.memoire;
     }
 
+    public static HashMap<String, String> getMemoireCourante() {
+        if (MemoiresLet.MemoireLetCourante == 0) {
+            return Memoire.memoire;
+        } else {
+            return MemoiresLet.getMemoireLetCourante();
+        }
+    }
+
     public static void afficherEtatMemoire() {
         System.out.println(Memoire.memoire + "\n");
     }

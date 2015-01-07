@@ -2,6 +2,7 @@ package arbre;
 
 import exception.SyntaxErrorException;
 import interpreter.Memoire;
+import interpreter.MemoiresLet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.omg.CORBA.MARSHAL;
@@ -158,12 +159,13 @@ public class InterpreterArbre {
 
     private static String interpreterLet(Noeud n) {
         String res = "";
-        Memoire memoireFille = Memoire.getMemoireEnfant();
+        MemoiresLet.nouvelleMemoireLet();
         if (n.getFils().size() == 3) {
             // CAS DE LA DÉCLARATION : let variable in com end
         } else {
             // CAS DE L'ALIASING : let variable1 be variable2 in com end
         }
+        MemoiresLet.supprimerMemoireLetCourante();
         return res;
     }
 
