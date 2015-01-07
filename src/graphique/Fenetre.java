@@ -132,7 +132,7 @@ public class Fenetre extends Application {
             this.getChildren().add(importer);
 
             // Exportation d'une ou de plusieurs commandes
-            exporter = new Button("Exporter");
+            exporter = new Button("Exporter sélection");
             exporter.setTranslateX(100);
             exporter.setTranslateY(Config.hauteur - 27);
             exporter.setOnAction((ActionEvent event) -> {
@@ -142,7 +142,7 @@ public class Fenetre extends Application {
 
             // Exportation de toutes les commandes
             exporterTout = new Button("Exporter tout");
-            exporterTout.setTranslateX(180);
+            exporterTout.setTranslateX(220);
             exporterTout.setTranslateY(Config.hauteur - 27);
             exporterTout.setOnAction((ActionEvent event) -> {
                 actionExporterTout();
@@ -179,23 +179,23 @@ public class Fenetre extends Application {
             }
             saisie.setText("");
         }
-
-        /**
-         * Méthode appelée lorsque l'utilisateur appuie sur le bouton exporter.
-         */
-        private void actionExporter() {
-            // On demande à l'utilisateur où souhaite-t-il l'exporter
+        
+        private File recupererFichier() {
             FileChooser fc = new FileChooser();
             fc.setTitle("Exporter vos commandes");
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Péchoux FILE", "*.pechoux"));
             File file = fc.showSaveDialog(null);
+            return file;
+        }
+        
+        private void ecrireAvecIterateur(File file, Iterator it) {
             if (file != null) {
                 System.out.println("*** DEBUT DE L'EXPORTATION ***");
                 try {
                     PrintWriter pw = new PrintWriter(new FileWriter(file.getAbsolutePath()));
 
                     // Récupération des valeurs à exporter
-                    Iterator it = listeCommandes.getSelectionModel().getSelectedItems().iterator();
+                   
                     while (it.hasNext()) {
                         String commande = (String) it.next();
                         System.out.println("--> " + commande);
@@ -212,6 +212,16 @@ public class Fenetre extends Application {
                 JOptionPane.showMessageDialog(null, "Erreur", "Fichier incorrect", JOptionPane.ERROR_MESSAGE);
             }
             System.out.println("*** FIN DE L'EXPORTATION ***");
+        }
+
+        /**
+         * Méthode appelée lorsque l'utilisateur appuie sur le bouton exporter.
+         */
+        private void actionExporter() {
+            // On demande à l'utilisateur où souhaite-t-il l'exporter
+            File file = recupererFichier();
+            Iterator it = listeCommandes.getSelectionModel().getSelectedItems().iterator();
+            ecrireAvecIterateur(file, it);
         }
 
         /**
@@ -247,34 +257,10 @@ public class Fenetre extends Application {
         }
 
         private void actionExporterTout() {
-// On demande à l'utilisateur où souhaite-t-il l'exporter
-            FileChooser fc = new FileChooser();
-            fc.setTitle("Exporter vos commandes");
-            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Péchoux FILE", "*.pechoux"));
-            File file = fc.showSaveDialog(null);
-            if (file != null) {
-                System.out.println("*** DEBUT DE L'EXPORTATION ***");
-                try {
-                    PrintWriter pw = new PrintWriter(new FileWriter(file.getAbsolutePath()));
-
-                    // Récupération des valeurs à exporter
-                    Iterator it = listeCommandes.getSelectionModel().getSelectedItems().iterator();
-                    while (it.hasNext()) {
-                        String commande = (String) it.next();
-                        System.out.println("--> " + commande);
-                        pw.println(commande);
-                    }
-
-                    pw.close();
-                    JOptionPane.showMessageDialog(null, "Exportation terminée", "Succès", JOptionPane.INFORMATION_MESSAGE);
-
-                } catch (IOException ex) {
-                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Erreur", "Fichier incorrect", JOptionPane.ERROR_MESSAGE);
-            }
-            System.out.println("*** FIN DE L'EXPORTATION ***");
+            // On demande à l'utilisateur où souhaite-t-il l'exporter
+            File file = recupererFichier();
+            Iterator it = listeCommandes.getItems().iterator();
+            ecrireAvecIterateur(file, it);
         }
     }
 }
