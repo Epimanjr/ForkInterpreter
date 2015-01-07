@@ -3,11 +3,12 @@
  */
 package memoire;
 
+import arbre.InterpreterArbre;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Memoire {
-    
+
     /**
      * Permet de gérer les valeurs temporaires lors des commandes "let".
      */
@@ -57,7 +58,22 @@ public class Memoire {
     }
 
     public static void ajouter(String nom, String valeur) {
-        Memoire.memoire.put(nom, valeur);
+        boolean vtemp = false;
+        // On recherche d'abord dans les variables temporaires
+        // On modifie si on trouve
+        if (!Memoire.memoireLet.isEmpty()) {
+            for (int i = Memoire.memoireLet.size() - 1; i >= 0; i--) {
+                if (Memoire.memoireLet.get(i).getNom().equals(nom)) {
+                    Memoire.memoireLet.get(i).setValeur(valeur);
+                    vtemp = true;
+                }
+            }
+        }
+
+        // Si on arrive ici, il faut modifier dans la mémoire globale
+        if (vtemp == false) {
+            Memoire.memoire.put(nom,valeur);
+        }
     }
 
     public Memoire memoire() {

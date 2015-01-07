@@ -5,6 +5,7 @@ import memoire.Memoire;
 import memoire.MemoiresLet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import memoire.ValeurTemporaire;
 import org.omg.CORBA.MARSHAL;
 
 /**
@@ -85,11 +86,16 @@ public class InterpreterArbre {
         Noeud nCondition = n.getFils().get(0);
         String valeurCondition = trouverValeur(nCondition);
 
-        // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
-        if (Memoire.getMemoire().containsKey(valeurCondition)) {
-            valeurCondition = Memoire.getMemoire().get(valeurCondition);
+        String vTest = valeurEnMemoire(valeurCondition);
+        if (vTest != null) {
+            valeurCondition = vTest;
         }
 
+        /* OLD:
+         // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
+         if (Memoire.getMemoire().containsKey(valeurCondition)) {
+         valeurCondition = Memoire.getMemoire().get(valeurCondition);
+         } */
         // SI LA CONDITION EST BIEN, AU FINAL, TRUE OU FALSE
         if ((valeurCondition.equals("true")) || (valeurCondition.equals("false"))) {
             // SI C'EST VRAI
@@ -119,11 +125,16 @@ public class InterpreterArbre {
         Noeud nCondition = n.getFils().get(0);
         String valeurCondition = trouverValeur(nCondition);
 
-        // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
-        if (Memoire.getMemoire().containsKey(valeurCondition)) {
-            valeurCondition = Memoire.getMemoire().get(valeurCondition);
+        String vTest = valeurEnMemoire(valeurCondition);
+        if (vTest != null) {
+            valeurCondition = vTest;
         }
 
+        /* OLD:
+         // SI LA MEMOIRE CONTIENT UNE VARIABLE DE CE NOM, ON RECUPERE SA VALEUR
+         if (Memoire.getMemoire().containsKey(valeurCondition)) {
+         valeurCondition = Memoire.getMemoire().get(valeurCondition);
+         } */
         // SI LA CONDITION DE LA BOUCLE EST BIEN, AU FINAL, TRUE
         if (valeurCondition.equals("true")) {
             // ON INTERPRETE LE NOEUD VRAI
@@ -159,24 +170,35 @@ public class InterpreterArbre {
 
     private static String interpreterLet(Noeud n) {
         String res = "";
-        MemoiresLet.nouvelleMemoireLet();
-        if (n.getFils().size() == 3) {
+        String nom1, nom2;
+        if (n.getFils().size() == 2) {
             // CAS DE LA DÉCLARATION : let variable in com end
+            nom1 = n.getFils().get(0).getValeur();
+            Memoire.memoireLet.add(new ValeurTemporaire(nom1, valeurEnMemoire(nom1)));
+            Noeud nCom = n.getFils().get(1);
+            res = interpreterNoeud(nCom);
+            Memoire.memoireLet.remove(Memoire.memoireLet.size() - 1);
         } else {
             // CAS DE L'ALIASING : let variable1 be variable2 in com end
+            nom1 = n.getFils().get(0).getValeur();
+            nom2 = n.getFils().get(1).getValeur();
+            Memoire.memoireLet.add(new ValeurTemporaire(nom1, valeurEnMemoire(nom2)));
+            Noeud nCom = n.getFils().get(2);
+            res = interpreterNoeud(nCom);
+            Memoire.memoireLet.remove(Memoire.memoireLet.size() - 1);
         }
-        MemoiresLet.supprimerMemoireLetCourante();
         return res;
     }
 
     private static String trouverValeur(Noeud n) {
         String v = null;
         String vNoeud = n.getValeur();
+        String vTest = valeurEnMemoire(vNoeud);
         // SI LA VALEUR DU NOEUD EST UN ENTIER OU UN BOOLEEN, ON RETOURNERA CETTE VALEUR
         if (estEntierOuBooleen(vNoeud)) {
             v = vNoeud;
-        } else if (estEnMemoire(vNoeud)) {
-            v = valeurEnMemoire(vNoeud);
+        } else if (vTest != null) {
+            v = vTest;
         } else {
             String[] symbolesAcceptables = {"+", "-", "*", "/", ">", "<", "="};
             // SI LA VALEUR DANS LE NOEUD EST UN SYMBOLE ACCEPTÉ, ON CONTINUE (récursivité)
@@ -217,21 +239,21 @@ public class InterpreterArbre {
         return res;
     }
 
-    private static String valeurEnMemoire(String s) {
+    public static String valeurEnMemoire(String s) {
         // On recherche d'abord dans les variables temporaires
         if (!Memoire.memoireLet.isEmpty()) {
-            for (int i = Memoire.memoireLet.size() - 1; i > 0; i--) {
-               if(Memoire.memoireLet.get(i).getNom().equals(s)) {
-                   return Memoire.memoireLet.get(i).getValeur();
-               }
+            for (int i = Memoire.memoireLet.size() - 1; i >= 0; i--) {
+                if (Memoire.memoireLet.get(i).getNom().equals(s)) {
+                    return Memoire.memoireLet.get(i).getValeur();
+                }
             }
         }
-        
+
         // Si on arrive ici, il faut chercher dans la mémoire globale
-        if(Memoire.getMemoire().containsKey(s)) {
+        if (Memoire.getMemoire().containsKey(s)) {
             return Memoire.getMemoire().get(s);
         }
-        
+
         // On a pas trouvé s dans la mémoire
         return null;
     }
