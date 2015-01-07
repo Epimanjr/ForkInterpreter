@@ -7,17 +7,28 @@ package graphique;
 import arbre.Arbre;
 import arbre.GenererArbre;
 import exception.SyntaxErrorException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
@@ -58,6 +69,8 @@ public class Fenetre extends Application {
         private final ListView listeCommandes;
         private final TextArea affichage;
         private final TableView memoire;
+        private final Button exporter;
+        private final Button importer;
         // Fin des éléments
 
         public MainGroup() {
@@ -88,6 +101,7 @@ public class Fenetre extends Application {
 
             // Liste des commandes
             listeCommandes = new ListView();
+            listeCommandes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             listeCommandes.setTranslateX(5);
             listeCommandes.setTranslateY(40 + saisie.getTranslateY() + Config.hauteurSaisie);
             listeCommandes.setPrefSize(Config.largeur * 4 / 10 - 5, Config.hauteur - listeCommandes.getTranslateY() - 30);
@@ -106,6 +120,24 @@ public class Fenetre extends Application {
             memoire.setTranslateY(listeCommandes.getTranslateY());
             memoire.setPrefSize(listeCommandes.getPrefWidth() / 2 - 10, listeCommandes.getPrefHeight());
             this.getChildren().add(memoire);
+
+            // Importation d'une ou de plusieurs commandes
+            importer = new Button("Importer");
+            importer.setTranslateX(25);
+            importer.setTranslateY(Config.hauteur - 27);
+            importer.setOnAction((ActionEvent event) -> {
+                actionImporter();
+            });
+            this.getChildren().add(importer);
+            
+            // Exportation d'une ou de plusieurs commandes
+            exporter = new Button("Exporter");
+            exporter.setTranslateX(100);
+            exporter.setTranslateY(Config.hauteur - 27);
+            exporter.setOnAction((ActionEvent event) -> {
+                actionExporter();
+            });
+            this.getChildren().add(exporter);
         }
 
         /**
@@ -136,6 +168,72 @@ public class Fenetre extends Application {
                 }
             }
 
+        }
+
+        /**
+         * Méthode appelée lorsque l'utilisateur appuie sur le bouton exporter.
+         */
+        private void actionExporter() {
+            // On demande à l'utilisateur où souhaite-t-il l'exporter
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Exporter vos commandes");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Péchoux FILE", "*.pechoux"));
+            File file = fc.showSaveDialog(null);
+            if (file != null) {
+                System.out.println("*** DEBUT DE L'EXPORTATION ***");
+                try {
+                    PrintWriter pw = new PrintWriter(new FileWriter(file.getAbsolutePath()));
+
+                    // Récupération des valeurs à exporter
+                    Iterator it = listeCommandes.getSelectionModel().getSelectedItems().iterator();
+                    while (it.hasNext()) {
+                        String commande = (String) it.next();
+                        System.out.println("--> " + commande);
+                        pw.println(commande);
+                    }
+
+                    pw.close();
+                    JOptionPane.showMessageDialog(null, "Exportation terminée", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Erreur", "Fichier incorrect", JOptionPane.ERROR_MESSAGE);
+            }
+            System.out.println("*** FIN DE L'EXPORTATION ***");
+        }
+
+        /**
+         * Méthode appelée lorsque l'utilisateur appuie sur le bouton importer.
+         */
+        private void actionImporter() {
+            // On demande à l'utilisateur où souhaite-t-il l'exporter
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Importer vos commandes");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Péchoux FILE", "*.pechoux"));
+            File file = fc.showOpenDialog(null);
+            if (file != null) {
+                System.out.println("*** DEBUT DE L'IMPORTATION ***");
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+
+                    // Récupération des valeurs à importer
+                    while(br.ready()) {
+                        String commande = br.readLine();
+                        System.out.println(commande);
+                    }
+                    
+                    br.close();
+                    JOptionPane.showMessageDialog(null, "Importation terminée", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Fenetre.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Erreur", "Fichier incorrect", JOptionPane.ERROR_MESSAGE);
+            }
+            System.out.println("*** FIN DE L'IMPORTATION ***");
         }
     }
 }
