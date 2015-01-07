@@ -228,7 +228,7 @@ public class Fenetre extends Application {
                 System.out.println("Veuillez saisir quelque chose !");
                 JOptionPane.showMessageDialog(null, "Veuillez saisir quelque chose !", "Erreur commande", JOptionPane.ERROR_MESSAGE);
             } else {
-                if(text.equals("exit") || text.equals("EXIT")) {
+                if (text.equals("exit") || text.equals("EXIT")) {
                     System.exit(0);
                 }
                 System.out.println("Exécution de : " + text);
@@ -253,6 +253,11 @@ public class Fenetre extends Application {
             saisie.setText("");
         }
 
+        /**
+         * Ouvre un explorateur de fichier
+         *
+         * @return Fichier
+         */
         private File recupererFichier() {
             FileChooser fc = new FileChooser();
             fc.setTitle("Exporter vos commandes");
@@ -261,6 +266,12 @@ public class Fenetre extends Application {
             return file;
         }
 
+        /**
+         * Export.
+         *
+         * @param file Fichier
+         * @param it Données.
+         */
         private void ecrireAvecIterateur(File file, Iterator it) {
             if (file != null) {
                 System.out.println("*** DEBUT DE L'EXPORTATION ***");
@@ -337,6 +348,9 @@ public class Fenetre extends Application {
             System.out.println("*** FIN DE L'IMPORTATION ***");
         }
 
+        /**
+         * Méthode appelée quand l'utilisateur appuie sur exporter tout.
+         */
         private void actionExporterTout() {
             // On demande à l'utilisateur où souhaite-t-il l'exporter
             File file = recupererFichier();
@@ -344,6 +358,11 @@ public class Fenetre extends Application {
             ecrireAvecIterateur(file, it);
         }
 
+        /**
+         * Exécute une commande.
+         *
+         * @param text commande
+         */
         private void executerCommande(String text) {
             // Ajout à la liste des commandes
             listeCommandes.getItems().add(0, text);
@@ -362,6 +381,9 @@ public class Fenetre extends Application {
             }
         }
 
+        /**
+         * Vidage !
+         */
         private void actionVider() {
             System.out.println("Vidage de l'écran !");
             // Vidage de la liste des commandes
@@ -372,6 +394,9 @@ public class Fenetre extends Application {
             // Vidage de la mémoire
         }
 
+        /**
+         * Affiche une commande de l'historique.
+         */
         private void afficherCommande() {
             if (indiceCommande < nombreCommandes && indiceCommande >= 0) {
                 // On peut alors accéder à la commande
@@ -394,12 +419,18 @@ public class Fenetre extends Application {
             }
         }
 
+        /**
+         * Affiche la commande précédente.
+         */
         private void afficherCommandePrecedente() {
             indiceCommandeSauve = indiceCommande;
             indiceCommande++;
             afficherCommande();
         }
 
+        /**
+         * Affiche la commande suivante.
+         */
         private void afficherCommandeSuivante() {
             indiceCommandeSauve = indiceCommande;
             indiceCommande--;
