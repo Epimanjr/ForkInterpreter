@@ -22,11 +22,13 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,6 +37,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
@@ -72,6 +76,10 @@ public class Fenetre extends Application {
 
     class MainGroup extends Group {
 
+        public int nombreCommandes = 0;
+        public int indiceCommande = -1;
+        public int indiceCommandeSauve = -1;
+
         // Début des éléments de la page
         private final Label label;
         private final Label label1;
@@ -89,7 +97,7 @@ public class Fenetre extends Application {
 
         public MainGroup() {
             // Label indicatif
-            label = new Label("Saisir une commande ici");
+            label = new Label("Saisir une commande ici (↑ et ↓ pour naviguer l'historique)");
             label.setPrefSize(Config.largeur * 8 / 10, Config.hauteurLabel);
             label.setTranslateX(5);
             label.setTranslateY(5);
@@ -104,6 +112,17 @@ public class Fenetre extends Application {
             saisie.setOnAction((ActionEvent event) -> {
                 // Appel d'une fonction de traitement
                 actionCommande(saisie.getText());
+            });
+            saisie.setOnKeyPressed((KeyEvent event) -> {
+                if (event.getCode().toString().equals("UP")) {
+                    // On affiche la commande précédente
+                    afficherCommandePrecedente();
+                } else if (event.getCode().toString().equals("DOWN")) {
+                    // On affiche la commande suivante
+                    afficherCommandeSuivante();
+                } else {
+                    indiceCommande = -1;
+                }
             });
             this.getChildren().add(saisie);
 
@@ -227,6 +246,9 @@ public class Fenetre extends Application {
                 }
                 ObservableList<Variable> data = FXCollections.observableArrayList(liste);
                 memoire.setItems(data);
+
+                // Incrémentation du nombre de commandes
+                nombreCommandes++;
             }
             saisie.setText("");
         }
@@ -349,5 +371,40 @@ public class Fenetre extends Application {
             affichage.setText("");
             // Vidage de la mémoire
         }
+
+        private void afficherCommande() {
+            if (indiceCommande < nombreCommandes && indiceCommande >= 0) {
+                // On peut alors accéder à la commande
+                Object commande = listeCommandes.getItems().get(indiceCommande);
+                saisie.setText(commande.toString());
+
+                // Algo de sélection dans la liste
+                for (int i = 0; i < nombreCommandes; i++) {
+                    if (i == indiceCommande) {
+                        listeCommandes.getSelectionModel().select(i);
+
+                    } else {
+                        listeCommandes.getSelectionModel().clearSelection(i);
+
+                    }
+                }
+            } else {
+                // On a atteint la limite, on ne fait rien
+                indiceCommande = indiceCommandeSauve;
+            }
+        }
+
+        private void afficherCommandePrecedente() {
+            indiceCommandeSauve = indiceCommande;
+            indiceCommande++;
+            afficherCommande();
+        }
+
+        private void afficherCommandeSuivante() {
+            indiceCommandeSauve = indiceCommande;
+            indiceCommande--;
+            afficherCommande();
+        }
+
     }
 }
