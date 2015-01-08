@@ -7,6 +7,7 @@ import arbre.Arbre;
 import arbre.GenererArbre;
 import arbre.Noeud;
 import exception.SyntaxErrorException;
+import java.util.Scanner;
 
 public class TestArbre {
 
@@ -16,23 +17,17 @@ public class TestArbre {
      * @param args arguments
      */
     public static void main(String[] args) {
-        // Création d'un Noeud
-        Noeud n = new Noeud("let");
-        // Création de l'arbre avec ce Noeud
-        Arbre a = new Arbre(n);
-        // Affichage de cet arbre
-        a.afficherArbre();
-
-        // Ajout d'un fils
-        Noeud fils = new Noeud("--");
-        n.ajouterFils(fils);
-
-        // Affichage des Noeuds
-        System.out.println(a.getRacine());
-        System.out.println(a.getRacine().getFils().get(0));
-        
-        // Affichage à nouveau de l'arbre
-        a.afficherArbre();
+        // Lecture au clavier
+        try (Scanner sc = new Scanner(System.in)) {
+            // Lecture au clavier
+            String line = lectureClavier(sc);
+            while(!line.equals("exit")) {
+                afficherArbreAvecCommande(line);
+                
+                // Demande d'une nouvelle ligne
+                line = lectureClavier(sc);
+            }
+        }
     }
     
     public static void afficherArbreAvecCommande(String commande) {
@@ -63,6 +58,11 @@ public class TestArbre {
         } catch (SyntaxErrorException ex) {
             System.out.println("Erreur de syntaxe.\n");
         }
+    }
+
+    private static String lectureClavier(Scanner sc) {
+        System.out.print("Commande : ");
+        return sc.nextLine();
     }
     
 }
